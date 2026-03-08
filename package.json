@@ -1,0 +1,35 @@
+{
+  "name": "learnship",
+  "version": "1.0.0",
+  "description": "Learn as you build. Build with intent. — A Windsurf-native platform for structured agentic engineering: spec-driven workflows, integrated learning, and production-grade design.",
+  "keywords": [
+    "agentic",
+    "development",
+    "windsurf",
+    "workflow",
+    "ai",
+    "learning",
+    "planning",
+    "cascade"
+  ],
+  "homepage": "https://github.com/FavioVazquez/learnship#readme",
+  "bugs": {
+    "url": "https://github.com/FavioVazquez/learnship/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FavioVazquez/learnship.git"
+  },
+  "license": "MIT",
+  "author": "Favio Vazquez",
+  "bin": {
+    "learnship": "./bin/learnship.js"
+  },
+  "scripts": {
+    "start": "node bin/learnship.js",
+    "test": "bash tests/run_all.sh"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

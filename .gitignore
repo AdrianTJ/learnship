@@ -1,0 +1,27 @@
+# learnship — gitignore
+
+# Image generation (private — keep local only)
+generate_images.py
+.env
+assets/raw/
+
+# Node
+node_modules/
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Local planning artifacts (user projects — not part of the platform repo)
+.planning/
+
+# Local windsurf install patches
+.windsurf/local-patches/
+
+# Private release tooling (not for public repo)
+publish-first-release.md

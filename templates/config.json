@@ -1,0 +1,21 @@
+{
+  "mode": "yolo",
+  "granularity": "standard",
+  "model_profile": "balanced",
+  "learning_mode": "auto",
+  "planning": {
+    "commit_docs": true,
+    "search_gitignored": false
+  },
+  "workflow": {
+    "research": true,
+    "plan_check": true,
+    "verifier": true,
+    "nyquist_validation": true
+  },
+  "git": {
+    "branching_strategy": "none",
+    "phase_branch_template": "phase-{phase}-{slug}",
+    "milestone_branch_template": "{milestone}-{slug}"
+  }
+}
