@@ -9,6 +9,35 @@ This project uses [semantic versioning](https://semver.org/): `MAJOR.MINOR.PATCH
 
 ---
 
+## [v1.2.0] — Original Work: GSD scrubbed, impeccable skill integrated
+
+**Released:** 2026-03-08
+
+### Added
+
+- **`frontend-design` skill** — now uses the full upstream [impeccable](https://github.com/pbakaus/impeccable) skill by @pbakaus: all 7 domain-specific reference files (typography, color, spatial, motion, interaction, responsive, ux-writing) with their complete content and 17 commands (`/audit`, `/critique`, `/polish`, `/colorize`, `/animate`, etc.)
+- **`SKILL.md`** attribution updated to credit pbakaus/impeccable correctly
+
+### Changed
+
+- **All GSD/get-shit-done references removed** — learnship is now fully original work:
+  - `references/model-profiles.md` — agent names renamed (e.g. `gsd-planner` → `planner`), Claude Code-specific notes removed
+  - `references/planning-config.md` — `gsd-tools.cjs` binary calls replaced with plain `git` + `python3` bash commands; branch templates no longer prefixed with `gsd/`
+  - `references/git-integration.md` — all `gsd-tools.cjs` commit commands replaced with plain `git add` + `git commit`
+  - `references/ui-brand.md` — `GSD ►` banner prefix replaced with `learnship ►`
+  - `references/verification-patterns.md` — stale `~/.claude/get-shit-done/` path reference removed
+  - `templates/state.md` — `/gsd:add-todo` → `/add-todo`, `/gsd:check-todos` → `/check-todos`
+  - `templates/project.md` — `/gsd:map-codebase` → `/map-codebase`
+  - `.windsurf/workflows/quick.md` — frontmatter description updated
+  - `CONTRIBUTING.md` — `gsd-tools.cjs` binary call guidance removed
+  - `README.md` — impeccable credit URL corrected to `pbakaus/impeccable`
+
+### Fixed
+
+- **`SKILL.md`** — removed `{{model}}` Claude-specific template variable (not supported in Windsurf)
+
+---
+
 ## [v1.1.0] — Install & Workflow Fixes
 
 **Released:** 2026-03-08

@@ -719,7 +719,7 @@ learnship/
 
 - **[get-shit-done](https://github.com/davila7/get-shit-done)** — the spec-driven, context-engineered workflow system that inspired the phase lifecycle, planning artifacts, and agent coordination patterns
 - **[agentic-learn](https://github.com/faviovazquez/agentic-learn)** — the learning partner skill whose neuroscience-backed techniques (retrieval, spacing, generation, reflection) power the Learning Partner layer
-- **[impeccable](https://github.com/faviovazquez/impeccable)** — the frontend design skill that raised the bar on UI quality standards and powers the Design System layer
+- **[impeccable](https://github.com/pbakaus/impeccable)** — the frontend design skill that raised the bar on UI quality standards and powers the Design System layer
 
 learnship adapts, combines, and extends these into a unified, Windsurf-native system. All three are used as inspiration — learnship is original work built on their shoulders.
 

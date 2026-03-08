@@ -84,7 +84,7 @@ Read `learning_mode` from `.planning/config.json`.
 
 ### 4. Windsurf-native rules
 
-- **No binary calls** — never call `gsd-tools.cjs` or any Node.js binary. Use bash commands directly.
+- **No binary calls** — use bash and git commands directly, never external binaries.
 - **Relative paths only** — reference platform files as `@./agents/planner.md`, not absolute paths.
 - **No `AskUserQuestion` tool** — use plain prose to ask questions. Cascade handles the conversation.
 - **No `Task()` spawning syntax** — describe parallel work as "run these agents in parallel" in prose.

@@ -1,5 +1,5 @@
 ---
-description: Execute an ad-hoc task with GSD guarantees — atomic commits, state tracking, no full planning ceremony
+description: Execute an ad-hoc task with full agentic guarantees — atomic commits, state tracking, no full planning ceremony
 ---
 
 # Quick Task

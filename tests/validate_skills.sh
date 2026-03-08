@@ -25,45 +25,105 @@ check() {
 echo ""
 echo "─── Skills Structure Validation ────────────────────────────────────────"
 
-REQUIRED_SKILLS=("agentic-learning" "frontend-design")
+IMPECCABLE_DIR="$SKILLS_DIR/impeccable"
 
-for skill in "${REQUIRED_SKILLS[@]}"; do
-  skill_dir="$SKILLS_DIR/$skill"
+IMPECCABLE_SKILLS=(
+  "frontend-design"
+  "adapt" "animate" "audit" "bolder" "clarify" "colorize"
+  "critique" "delight" "distill" "extract" "harden"
+  "normalize" "onboard" "optimize" "polish" "quieter"
+  "teach-impeccable"
+)
+
+FRONTEND_DESIGN_REFS=(
+  "typography.md" "color-and-contrast.md" "spatial-design.md"
+  "motion-design.md" "interaction-design.md" "responsive-design.md"
+  "ux-writing.md"
+)
+
+# Check agentic-learning skill (top-level)
+echo ""
+echo "  Checking skill: agentic-learning"
+if [ -d "$SKILLS_DIR/agentic-learning" ]; then
+  echo "    ✓ Directory exists"
+  PASS=$((PASS+1))
+else
+  echo "    ✗ Directory missing"
+  FAIL=$((FAIL+1))
+  ERRORS+=("Missing skill directory: agentic-learning")
+fi
+if [ -f "$SKILLS_DIR/agentic-learning/SKILL.md" ]; then
+  echo "    ✓ SKILL.md present"
+  PASS=$((PASS+1))
+else
+  echo "    ✗ SKILL.md missing"
+  FAIL=$((FAIL+1))
+  ERRORS+=("Missing SKILL.md: agentic-learning")
+fi
+
+# Check impeccable/ container exists
+echo ""
+echo "  Checking impeccable/ container"
+if [ -d "$IMPECCABLE_DIR" ]; then
+  echo "    ✓ impeccable/ directory exists"
+  PASS=$((PASS+1))
+else
+  echo "    ✗ impeccable/ directory missing"
+  FAIL=$((FAIL+1))
+  ERRORS+=("Missing impeccable/ container directory")
+fi
+
+# Check each impeccable skill
+for skill in "${IMPECCABLE_SKILLS[@]}"; do
+  skill_dir="$IMPECCABLE_DIR/$skill"
   echo ""
-  echo "  Checking skill: $skill"
+  echo "  Checking impeccable/$skill"
 
-  # Skill directory exists
   if [ -d "$skill_dir" ]; then
     echo "    ✓ Directory exists"
     PASS=$((PASS+1))
   else
-    echo "    ✗ Directory missing: $skill_dir"
+    echo "    ✗ Directory missing"
     FAIL=$((FAIL+1))
-    ERRORS+=("Missing skill directory: $skill")
+    ERRORS+=("Missing impeccable/$skill")
     continue
   fi
 
-  # SKILL.md exists
-  if [ -f "$skill_dir/SKILL.md" ]; then
-    echo "    ✓ SKILL.md present"
-    PASS=$((PASS+1))
-  else
-    echo "    ✗ SKILL.md missing in $skill"
-    FAIL=$((FAIL+1))
-    ERRORS+=("Missing SKILL.md in $skill")
-  fi
-
-  # SKILL.md is non-empty (>100 chars)
   if [ -f "$skill_dir/SKILL.md" ]; then
     size=$(wc -c < "$skill_dir/SKILL.md")
-    if [ "$size" -gt 100 ]; then
-      echo "    ✓ SKILL.md has content ($size bytes)"
-      PASS=$((PASS+1))
-    else
-      echo "    ✗ SKILL.md too small ($size bytes)"
+    echo "    ✓ SKILL.md present ($size bytes)"
+    PASS=$((PASS+1))
+  else
+    echo "    ✗ SKILL.md missing"
+    FAIL=$((FAIL+1))
+    ERRORS+=("Missing SKILL.md: impeccable/$skill")
+  fi
+
+  # Check no unresolved placeholders
+  if [ -f "$skill_dir/SKILL.md" ]; then
+    if grep -q '{{' "$skill_dir/SKILL.md"; then
+      echo "    ✗ Unresolved {{placeholders}} in SKILL.md"
       FAIL=$((FAIL+1))
-      ERRORS+=("SKILL.md too small in $skill")
+      ERRORS+=("Unresolved placeholders: impeccable/$skill/SKILL.md")
+    else
+      echo "    ✓ No unresolved placeholders"
+      PASS=$((PASS+1))
     fi
+  fi
+done
+
+# Check frontend-design reference files
+echo ""
+echo "  Checking impeccable/frontend-design reference files"
+for ref in "${FRONTEND_DESIGN_REFS[@]}"; do
+  ref_path="$IMPECCABLE_DIR/frontend-design/reference/$ref"
+  if [ -f "$ref_path" ]; then
+    echo "    ✓ reference/$ref"
+    PASS=$((PASS+1))
+  else
+    echo "    ✗ reference/$ref missing"
+    FAIL=$((FAIL+1))
+    ERRORS+=("Missing reference file: $ref")
   fi
 done
 

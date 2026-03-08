@@ -127,9 +127,15 @@ if [[ "$UNINSTALL" == true ]]; then
     ((REMOVED++)) || true
   fi
 
+  if [[ -d "${TARGET_DIR}/skills/impeccable" ]]; then
+    rm -rf "${TARGET_DIR}/skills/impeccable"
+    print_info "Removed skills/impeccable/"
+    ((REMOVED++)) || true
+  fi
+
   if [[ -d "${TARGET_DIR}/skills/frontend-design" ]]; then
     rm -rf "${TARGET_DIR}/skills/frontend-design"
-    print_info "Removed skills/frontend-design/"
+    print_info "Removed skills/frontend-design/ (legacy)"
     ((REMOVED++)) || true
   fi
 
@@ -196,15 +202,15 @@ else
   print_warn "skills/agentic-learning/ not found in source — skipping"
 fi
 
-# frontend-design
-if [[ -d "${REPO_DIR}/.windsurf/skills/frontend-design" ]]; then
-  mkdir -p "${TARGET_DIR}/skills/frontend-design"
-  if [[ "$(realpath "${REPO_DIR}/.windsurf/skills/frontend-design")" != "$(realpath "${TARGET_DIR}/skills/frontend-design" 2>/dev/null)" ]]; then
-    cp -r "${REPO_DIR}/.windsurf/skills/frontend-design/"* "${TARGET_DIR}/skills/frontend-design/"
+# impeccable (full design skill suite)
+if [[ -d "${REPO_DIR}/.windsurf/skills/impeccable" ]]; then
+  if [[ "$(realpath "${REPO_DIR}/.windsurf/skills/impeccable")" != "$(realpath "${TARGET_DIR}/skills/impeccable" 2>/dev/null)" ]]; then
+    cp -r "${REPO_DIR}/.windsurf/skills/impeccable" "${TARGET_DIR}/skills/impeccable"
   fi
-  print_success "skills/frontend-design/ (impeccable design)"
+  IMPECCABLE_COUNT=$(find "${REPO_DIR}/.windsurf/skills/impeccable" -name "SKILL.md" | wc -l | tr -d ' ')
+  print_success "skills/impeccable/ (${IMPECCABLE_COUNT} design skills — audit, critique, polish, colorize + more)"
 else
-  print_warn "skills/frontend-design/ not found in source — skipping"
+  print_warn "skills/impeccable/ not found in source — skipping"
 fi
 
 echo ""
@@ -215,7 +221,7 @@ echo -e "${BOLD}━━━━━━━━━━━━━━━━━━━━━�
 echo -e "${GREEN}${BOLD}  Installation complete!${RESET}"
 echo -e "${BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${RESET}"
 echo ""
-echo -e "  ${BOLD}Installed:${RESET} ${WORKFLOW_COUNT} workflows + 2 skills"
+echo -e "  ${BOLD}Installed:${RESET} ${WORKFLOW_COUNT} workflows + 2 skill suites (agentic-learning, impeccable)"
 echo -e "  ${BOLD}Location:${RESET}  ${TARGET_DIR}"
 echo ""
 
