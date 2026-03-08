@@ -9,6 +9,17 @@ This project uses [semantic versioning](https://semver.org/): `MAJOR.MINOR.PATCH
 
 ---
 
+## [v1.3.2] — Fix Mermaid \n rendering and npm badge
+
+**Released:** 2026-03-08
+
+### Fixed
+
+- **`README.md`** — All Mermaid node label `\n` replaced with `<br/>` so line breaks render correctly in GitHub and Windsurf
+- **`README.md`** — npm badge replaced with GitHub release badge (package not on npm; badge was showing "not found")
+
+---
+
 ## [v1.3.1] — Full consistency audit: /ls and /next propagated everywhere
 
 **Released:** 2026-03-08

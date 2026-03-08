@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://github.com/FavioVazquez/learnship/actions/workflows/ci.yml"><img src="https://github.com/FavioVazquez/learnship/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI"></a>
-  <a href="https://www.npmjs.com/package/learnship"><img src="https://img.shields.io/npm/v/learnship?color=3b82f6&label=npm" alt="npm version"></a>
+  <a href="https://github.com/FavioVazquez/learnship/releases/latest"><img src="https://img.shields.io/github/v/release/FavioVazquez/learnship?color=3b82f6&label=release" alt="Latest release"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-22c55e.svg" alt="License: MIT"></a>
   <a href="https://github.com/FavioVazquez/learnship/stargazers"><img src="https://img.shields.io/github/stars/FavioVazquez/learnship?style=flat&color=f59e0b" alt="Stars"></a>
   <img src="https://img.shields.io/badge/Windsurf-native-0ea5e9" alt="Windsurf native">
@@ -78,10 +78,10 @@ Once you have a project, every feature ships through the same four-step loop:
 
 ```mermaid
 flowchart LR
-    DP["/discuss-phase N\nCapture decisions"]
-    PP["/plan-phase N\nResearch + plans"]
-    EP["/execute-phase N\nBuild + commit"]
-    VW["/verify-work N\nUAT + diagnose"]
+    DP["/discuss-phase N<br/>Capture decisions"]
+    PP["/plan-phase N<br/>Research + plans"]
+    EP["/execute-phase N<br/>Build + commit"]
+    VW["/verify-work N<br/>UAT + diagnose"]
 
     DP --> PP --> EP --> VW
     VW -->|"next phase"| DP
@@ -113,8 +113,8 @@ Three integrated layers that reinforce each other:
 
 ```mermaid
 graph LR
-    WE["Workflow Engine\nSpec-driven phases\nContext-engineered plans\nAtomic execution"] --> LP["Learning Partner\nNeuroscience-backed\nWoven into workflows\nBuilds real understanding"]
-    WE --> DS["Design System\nProduction-grade UI\nImpeccable aesthetics\nAnti-AI-slop standards"]
+    WE["Workflow Engine<br/>Spec-driven phases<br/>Context-engineered plans<br/>Atomic execution"] --> LP["Learning Partner<br/>Neuroscience-backed<br/>Woven into workflows<br/>Builds real understanding"]
+    WE --> DS["Design System<br/>Production-grade UI<br/>Impeccable aesthetics<br/>Anti-AI-slop standards"]
     LP --> DS
     DS --> LP
 ```
@@ -143,10 +143,10 @@ Every agent invocation in learnship is loaded with structured context — nothin
 ```mermaid
 flowchart LR
     subgraph CONTEXT["Loaded into every agent call"]
-        A["AGENTS.md\nProject soul + current phase"]
-        B["REQUIREMENTS.md\nWhat we're building"]
-        C["DECISIONS.md\nEvery architectural choice"]
-        D["Phase CONTEXT.md\nImplementation preferences"]
+        A["AGENTS.md<br/>Project soul + current phase"]
+        B["REQUIREMENTS.md<br/>What we're building"]
+        C["DECISIONS.md<br/>Every architectural choice"]
+        D["Phase CONTEXT.md<br/>Implementation preferences"]
     end
     CONTEXT --> AGENT["AI Agent"]
     AGENT --> P["Executable PLAN.md"]
