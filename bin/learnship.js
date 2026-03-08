@@ -47,6 +47,10 @@ if (hasUninstall) forwardArgs.push('--uninstall');
 const result = spawnSync('bash', [installScript, ...forwardArgs], {
   stdio: 'inherit',
   cwd: repoRoot,
+  env: {
+    ...process.env,
+    LEARNSHIP_INSTALL_CWD: process.env.INIT_CWD || process.cwd(),
+  },
 });
 
 process.exit(result.status ?? 0);

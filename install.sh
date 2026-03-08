@@ -70,7 +70,10 @@ get_target_dir() {
   if [[ "$scope" == "global" ]]; then
     echo "$HOME/.codeium/windsurf"
   else
-    echo "$(pwd)/.windsurf"
+    # When run via npx, pwd() is the npx cache — use LEARNSHIP_INSTALL_CWD
+    # (set by bin/learnship.js from INIT_CWD) to get the user's actual project dir
+    local project_dir="${LEARNSHIP_INSTALL_CWD:-$(pwd)}"
+    echo "${project_dir}/.windsurf"
   fi
 }
 
@@ -168,9 +171,12 @@ echo -e "${BOLD}Installing workflows...${RESET}"
 WORKFLOW_COUNT=0
 for wf_file in "${REPO_DIR}/.windsurf/workflows/"*.md; do
   wf_name="$(basename "$wf_file")"
-  cp "$wf_file" "${TARGET_DIR}/workflows/${wf_name}"
-  print_success "workflows/${wf_name}"
-  ((WORKFLOW_COUNT++)) || true
+  dest="${TARGET_DIR}/workflows/${wf_name}"
+  if [[ "$(realpath "$wf_file")" != "$(realpath "$dest" 2>/dev/null)" ]]; then
+    cp "$wf_file" "$dest"
+    print_success "workflows/${wf_name}"
+    ((WORKFLOW_COUNT++)) || true
+  fi
 done
 
 echo ""
@@ -182,7 +188,9 @@ echo -e "${BOLD}Installing skills...${RESET}"
 # agentic-learning
 if [[ -d "${REPO_DIR}/.windsurf/skills/agentic-learning" ]]; then
   mkdir -p "${TARGET_DIR}/skills/agentic-learning"
-  cp -r "${REPO_DIR}/.windsurf/skills/agentic-learning/"* "${TARGET_DIR}/skills/agentic-learning/"
+  if [[ "$(realpath "${REPO_DIR}/.windsurf/skills/agentic-learning")" != "$(realpath "${TARGET_DIR}/skills/agentic-learning" 2>/dev/null)" ]]; then
+    cp -r "${REPO_DIR}/.windsurf/skills/agentic-learning/"* "${TARGET_DIR}/skills/agentic-learning/"
+  fi
   print_success "skills/agentic-learning/ (learning partner)"
 else
   print_warn "skills/agentic-learning/ not found in source — skipping"
@@ -191,7 +199,9 @@ fi
 # frontend-design
 if [[ -d "${REPO_DIR}/.windsurf/skills/frontend-design" ]]; then
   mkdir -p "${TARGET_DIR}/skills/frontend-design"
-  cp -r "${REPO_DIR}/.windsurf/skills/frontend-design/"* "${TARGET_DIR}/skills/frontend-design/"
+  if [[ "$(realpath "${REPO_DIR}/.windsurf/skills/frontend-design")" != "$(realpath "${TARGET_DIR}/skills/frontend-design" 2>/dev/null)" ]]; then
+    cp -r "${REPO_DIR}/.windsurf/skills/frontend-design/"* "${TARGET_DIR}/skills/frontend-design/"
+  fi
   print_success "skills/frontend-design/ (impeccable design)"
 else
   print_warn "skills/frontend-design/ not found in source — skipping"
