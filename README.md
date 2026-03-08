@@ -3,11 +3,10 @@
 ![learnship banner](assets/banner.png)
 
 <p align="center">
-  <a href="https://github.com/FavioVazquez/learnship/actions"><img src="https://github.com/FavioVazquez/learnship/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/FavioVazquez/learnship/actions/workflows/ci.yml"><img src="https://github.com/FavioVazquez/learnship/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI"></a>
   <a href="https://www.npmjs.com/package/learnship"><img src="https://img.shields.io/npm/v/learnship?color=3b82f6&label=npm" alt="npm version"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-22c55e.svg" alt="License: MIT"></a>
   <a href="https://github.com/FavioVazquez/learnship/stargazers"><img src="https://img.shields.io/github/stars/FavioVazquez/learnship?style=flat&color=f59e0b" alt="Stars"></a>
-  <a href="https://github.com/FavioVazquez/learnship/releases"><img src="https://img.shields.io/github/v/release/FavioVazquez/learnship?color=8b5cf6&label=release" alt="Release"></a>
   <img src="https://img.shields.io/badge/Windsurf-native-0ea5e9" alt="Windsurf native">
   <img src="https://img.shields.io/badge/workflows-40-3b82f6" alt="40 workflows">
 </p>
@@ -58,8 +57,8 @@ Three integrated layers that reinforce each other:
 
 ```mermaid
 graph LR
-    WE["⚙️ Workflow Engine\nSpec-driven phases\nContext-engineered plans\nAtomic execution"] --> LP["🧠 Learning Partner\nNeuroscience-backed\nWoven into workflows\nBuilds real understanding"]
-    WE --> DS["🎨 Design System\nProduction-grade UI\nImpeccable aesthetics\nAnti-AI-slop standards"]
+    WE["Workflow Engine<br/>Spec-driven phases<br/>Context-engineered plans<br/>Atomic execution"] --> LP["Learning Partner<br/>Neuroscience-backed<br/>Woven into workflows<br/>Builds real understanding"]
+    WE --> DS["Design System<br/>Production-grade UI<br/>Impeccable aesthetics<br/>Anti-AI-slop standards"]
     LP --> DS
     DS --> LP
 ```
@@ -125,21 +124,21 @@ Repeat for each phase. When all phases are done: `/complete-milestone`.
 
 ```mermaid
 flowchart TD
-    NP["/new-project\nQuestioning → Research\nRequirements → Roadmap"]
+    NP["/new-project<br/>Questioning → Research<br/>Requirements → Roadmap"]
     NP --> DP
 
     subgraph PHASE["For each phase"]
-        DP["/discuss-phase N\nCapture implementation decisions"]
-        PP["/plan-phase N\nResearch + Plan + Verify"]
-        EP["/execute-phase N\nWave-based parallel execution"]
-        VW["/verify-work N\nManual UAT + auto-diagnosis"]
+        DP["/discuss-phase N<br/>Capture implementation decisions"]
+        PP["/plan-phase N<br/>Research + Plan + Verify"]
+        EP["/execute-phase N<br/>Wave-based parallel execution"]
+        VW["/verify-work N<br/>Manual UAT + auto-diagnosis"]
         DP --> PP --> EP --> VW
         VW -->|"More phases?"| DP
     end
 
     VW -->|"All phases done"| AM
-    AM["/audit-milestone\nRequirement coverage + stub detection"]
-    AM --> CM["/complete-milestone\nArchive · Tag release · Prepare next"]
+    AM["/audit-milestone<br/>Requirement coverage + stub detection"]
+    AM --> CM["/complete-milestone<br/>Archive · Tag release · Prepare next"]
     CM -->|"Another milestone?"| NM["/new-milestone"]
     NM --> DP
 ```
@@ -161,7 +160,7 @@ flowchart TD
 
     PPN --> RESEARCH
     RESEARCH --> RMD["RESEARCH.md"]
-    RMD --> PL["Planner\nReads: PROJECT · REQUIREMENTS\nCONTEXT · RESEARCH"]
+    RMD --> PL["Planner<br/>Reads: PROJECT · REQUIREMENTS<br/>CONTEXT · RESEARCH"]
     PL --> CHK["Plan Checker"]
     CHK -->|"Issues found (max 3x)"| PL
     CHK -->|"VERIFICATION PASSED"| PLANS["PLAN files ready"]
@@ -173,18 +172,18 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    EPN["/execute-phase N\nAnalyze dependencies"]
+    EPN["/execute-phase N<br/>Analyze dependencies"]
 
     subgraph W1["Wave 1 — independent plans (parallel)"]
-        E1["Executor A\n200K context → commit"]
-        E2["Executor B\n200K context → commit"]
+        E1["Executor A<br/>200K context → commit"]
+        E2["Executor B<br/>200K context → commit"]
     end
 
     subgraph W2["Wave 2 — depends on Wave 1"]
-        E3["Executor C\n200K context → commit"]
+        E3["Executor C<br/>200K context → commit"]
     end
 
-    VER["Verifier\nCheck must_haves\nvs. actual codebase"]
+    VER["Verifier<br/>Check must_haves<br/>vs. actual codebase"]
 
     EPN --> W1 --> W2 --> VER
     VER -->|"PASS"| DONE["VERIFICATION.md ✓"]
@@ -197,12 +196,12 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    NP["new-project\nrequirements approved"] -->|"auto"| B["@agentic-learning brainstorm\nValidate mental model"]
-    DP["discuss-phase\ncomplete"] -->|"auto"| EO["@agentic-learning either-or\nLog decisions made"]
-    PP["plan-phase\nplans created"] -->|"auto"| CL["@agentic-learning cognitive-load\nDecompose scope"]
-    EP["execute-phase\ncomplete"] -->|"auto"| RF["@agentic-learning reflect\nConsolidate learning"]
-    VW["verify-work\npassed"] -->|"auto"| SP["@agentic-learning space\nSchedule review"]
-    QK["quick\ncomplex task"] -->|"auto"| ST["@agentic-learning struggle\nTry it yourself"]
+    NP["new-project<br/>requirements approved"] -->|"auto"| B["@agentic-learning brainstorm<br/>Validate mental model"]
+    DP["discuss-phase<br/>complete"] -->|"auto"| EO["@agentic-learning either-or<br/>Log decisions made"]
+    PP["plan-phase<br/>plans created"] -->|"auto"| CL["@agentic-learning cognitive-load<br/>Decompose scope"]
+    EP["execute-phase<br/>complete"] -->|"auto"| RF["@agentic-learning reflect<br/>Consolidate learning"]
+    VW["verify-work<br/>passed"] -->|"auto"| SP["@agentic-learning space<br/>Schedule review"]
+    QK["quick<br/>complex task"] -->|"auto"| ST["@agentic-learning struggle<br/>Try it yourself"]
 ```
 
 *Checkpoints fire automatically when `learning_mode: "auto"` (default). Set to `"manual"` to only trigger explicitly.*
@@ -215,16 +214,16 @@ flowchart LR
 flowchart TD
     Q["/quick description"]
     Q --> FLAGS{Flags?}
-    FLAGS -->|"--discuss"| DISC["Identify gray areas\nCapture decisions\nWrite CONTEXT.md"]
+    FLAGS -->|"--discuss"| DISC["Identify gray areas<br/>Capture decisions<br/>Write CONTEXT.md"]
     FLAGS -->|"none"| PLAN
-    DISC --> PLAN["Planner\nCreate 1-3 task PLAN.md"]
+    DISC --> PLAN["Planner<br/>Create 1-3 task PLAN.md"]
     PLAN --> CHECK{--full?}
-    CHECK -->|"yes"| CHKR["Plan Checker\nmax 2 revisions"]
+    CHECK -->|"yes"| CHKR["Plan Checker<br/>max 2 revisions"]
     CHECK -->|"no"| EXEC
-    CHKR --> EXEC["Executor\natomic commits"]
+    CHKR --> EXEC["Executor<br/>atomic commits"]
     EXEC --> VER{--full?}
-    VER -->|"yes"| VERIFY["Verifier\ncheck must_haves"]
-    VER -->|"no"| STATE["Update STATE.md\nFinal commit"]
+    VER -->|"yes"| VERIFY["Verifier<br/>check must_haves"]
+    VER -->|"no"| STATE["Update STATE.md<br/>Final commit"]
     VERIFY --> STATE
 ```
 
@@ -234,7 +233,7 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    MC["/map-codebase\nParallel analysis"]
+    MC["/map-codebase<br/>Parallel analysis"]
 
     subgraph MAPS["Codebase mapping (parallel)"]
         S["STACK.md"]
@@ -244,7 +243,7 @@ flowchart LR
     end
 
     MC --> MAPS
-    MAPS --> NP["/new-project\nQuestions focus on\nwhat you're ADDING"]
+    MAPS --> NP["/new-project<br/>Questions focus on<br/>what you're ADDING"]
     NP --> PHASE["Normal phase workflow"]
 ```
 
