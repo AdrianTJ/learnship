@@ -15,7 +15,7 @@ Show all available workflows, organized by category.
 | `/new-project` | Full init: questioning → research → requirements → roadmap |
 | `/discuss-phase [N]` | Capture implementation decisions before planning |
 | `/plan-phase [N]` | Research + create + verify plans |
-| `/execute-phase [N]` | Wave-based parallel execution of all plans |
+| `/execute-phase [N]` | Wave-ordered execution of all plans |
 | `/verify-work [N]` | Manual UAT with auto-diagnosis and fix planning |
 | `/complete-milestone` | Archive milestone, tag release, prepare next version |
 | `/audit-milestone` | Pre-release: requirement coverage + stub detection |
@@ -49,7 +49,7 @@ Show all available workflows, organized by category.
 | `/map-codebase` | Analyze existing codebase (brownfield entry point) |
 | `/discovery-phase [N]` | Map unfamiliar code area — files, deps, risks — before planning |
 | `/debug [description]` | Systematic triage → diagnose → fix with session state |
-| `/diagnose-issues [N]` | Batch-diagnose all UAT issues in parallel, propose fix plan |
+| `/diagnose-issues [N]` | Batch-diagnose all UAT issues — groups by root cause, proposes fix plan |
 | `/execute-plan [N] [id]` | Run a single PLAN.md in isolation (re-run failed plan) |
 | `/validate-phase [N]` | Retroactive test coverage audit for a phase |
 

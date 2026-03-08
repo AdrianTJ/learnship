@@ -169,7 +169,7 @@ Ask: "Research the domain ecosystem before defining requirements?"
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-Spawn 4 parallel research efforts (as subagents or sequential deep reads). Each writes a file to `.planning/research/`:
+Run 4 research passes sequentially. Each writes a file to `.planning/research/`:
 
 1. **STACK.md** — Standard tech stack for this domain (specific libraries, versions, what NOT to use and why)
 2. **FEATURES.md** — What features exist in this domain: table stakes vs. differentiators vs. anti-features

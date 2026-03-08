@@ -83,7 +83,7 @@ Confidence levels:
 
 ## Multiple Issues
 
-When diagnosing multiple UAT gaps in parallel:
+When diagnosing multiple UAT gaps:
 - Investigate each independently
 - Note if two issues share a root cause (fix one to fix both)
 - Prioritize blockers first, then majors, then minors

@@ -39,13 +39,13 @@ Model profiles control which AI model each learnship agent uses. This allows bal
 
 ## Resolution Logic
 
-Orchestrators resolve model before spawning:
+Resolution order:
 
 ```
 1. Read .planning/config.json
 2. Check model_overrides for agent-specific override
 3. If no override, look up agent in profile table
-4. Pass model parameter to Task call
+4. Apply the resolved profile when adopting the agent persona
 ```
 
 ## Per-Agent Overrides

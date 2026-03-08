@@ -24,7 +24,7 @@ Each plan is a markdown file with YAML frontmatter and XML tasks:
 name: [plan name]
 phase: [phase number]
 plan: [plan number within phase]
-wave: [wave number for parallel execution]
+wave: [wave number for dependency ordering]
 depends_on: [] # list of plan IDs that must complete first
 files_modified: [] # files this plan creates or modifies
 autonomous: true # false if human checkpoint required
@@ -72,9 +72,9 @@ must_haves:
 
 ## Wave Assignment Rules
 
-- Plans with no dependencies → Wave 1 (run in parallel with other Wave 1 plans)
+- Plans with no dependencies → Wave 1 (independent of other Wave 1 plans)
 - Plans depending on Wave 1 plans → Wave 2
-- Plans that modify the same files as another plan → same wave OR sequential, never different parallel waves
+- Plans that modify the same files as another plan → same wave OR sequential, never split across different waves
 - Always prefer vertical slices (feature end-to-end) over horizontal layers (all models first, then all APIs)
 
 ## Quality Standards

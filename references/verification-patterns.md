@@ -519,7 +519,7 @@ For each artifact type, run through this checklist:
 
 ## Automated Verification Approach
 
-For the verification subagent, use this pattern:
+For the verification step, use this pattern:
 
 ```bash
 # 1. Check existence

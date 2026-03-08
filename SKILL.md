@@ -66,11 +66,11 @@ Learning checkpoints:
 
 ## Design Skill
 
-The `frontend-design` skill is always available for any UI work. Use its steering commands (`/audit`, `/critique`, `/polish`, `/motion`, `/tokens`, `/brand`) when reviewing or building user-facing interfaces.
+The `impeccable` skill suite is always available for any UI work. Use its steering commands (`/audit`, `/critique`, `/polish`, `/colorize`, `/animate`, `/bolder`, `/quieter`, `/distill`, `/clarify`, `/optimize`, `/harden`, `/delight`, `/extract`, `/adapt`, `/onboard`, `/normalize`, `/teach-impeccable`) when reviewing or building user-facing interfaces.
 
 ## Key Behaviors
 
-- **Context efficiency**: Pass file paths to subagent contexts, not file contents. Let subagents load their own context.
+- **Context efficiency**: Reference file paths rather than inlining file contents. Load context fresh when needed rather than carrying it forward.
 - **Atomic commits**: Every task gets its own commit. Never batch unrelated changes.
 - **No scope creep**: Execute exactly what plans say. Document deviations in SUMMARY.md.
 - **Goal-backward verification**: Check that `must_haves` are met in the codebase, not just that tasks ran.

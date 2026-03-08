@@ -81,12 +81,12 @@ Plans: 3/5 complete
 
 ---
 
-## Spawning Indicators
+## Activity Indicators
 
 ```
-◆ Spawning researcher...
+◆ Running research pass...
 
-◆ Spawning 4 researchers in parallel...
+◆ Running 4 research passes...
   → Stack research
   → Features research
   → Architecture research
