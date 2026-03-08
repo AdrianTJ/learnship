@@ -118,7 +118,7 @@ mv .windsurf/local-patches/ .windsurf/local-patches-$(date +%Y%m%d)/
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► PATCHES REAPPLIED ✓
+ learnship ► PATCHES REAPPLIED ✓
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 [N] local modification(s) restored:

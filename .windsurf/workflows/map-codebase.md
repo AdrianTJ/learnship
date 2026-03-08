@@ -4,7 +4,7 @@ description: Analyze an existing codebase and produce structured reference docs 
 
 # Map Codebase
 
-Analyze an existing codebase using parallel focused agents. Produces 7 structured documents in `.planning/codebase/` that feed into `new-project` when adding features to existing code.
+Analyze an existing codebase through structured focused exploration. Produces 7 structured documents in `.planning/codebase/` that feed into `new-project` when adding features to existing code.
 
 **Use before:** `/new-project` on a brownfield (existing) codebase.
 
@@ -45,15 +45,15 @@ Expected output files:
 - `TESTING.md` — test framework, structure, coverage
 - `CONCERNS.md` — tech debt, security, fragile areas
 
-## Step 3: Run Parallel Mapping
+## Step 3: Run Structured Mapping
 
-Spawn 4 parallel analysis efforts. For each, adopt the relevant `@./agents/researcher.md` persona focused on that dimension, explore the codebase thoroughly, and write documents directly.
+For each dimension below, adopt the relevant `@./agents/researcher.md` persona, explore the codebase thoroughly, and write the document directly.
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► MAPPING CODEBASE
+ learnship ► MAPPING CODEBASE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Running 4 parallel analysis agents...
+Running structured analysis...
 ```
 
 **Agent 1 — Tech Stack:**
@@ -112,7 +112,7 @@ git commit -m "docs: map existing codebase"
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► CODEBASE MAPPED ✓
+ learnship ► CODEBASE MAPPED ✓
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Created .planning/codebase/:

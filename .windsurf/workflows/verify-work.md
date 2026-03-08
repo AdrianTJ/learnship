@@ -216,7 +216,7 @@ Update each gap in UAT.md with the root cause:
 Display:
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► PLANNING FIXES
+ learnship ► PLANNING FIXES
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
@@ -227,7 +227,7 @@ Verify fix plans (max 3 iterations with `@./agents/verifier.md`) — same loop a
 Present when ready:
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► FIXES READY ✓
+ learnship ► FIXES READY ✓
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 **Phase [X]** — [N] gap(s) diagnosed, [M] fix plan(s) created

@@ -122,7 +122,7 @@ git commit -m "chore: initialize learnship project setup"
 Display:
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► QUESTIONING
+ learnship ► QUESTIONING
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
@@ -165,7 +165,7 @@ Ask: "Research the domain ecosystem before defining requirements?"
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► RESEARCHING
+ learnship ► RESEARCHING
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
@@ -181,7 +181,7 @@ After all four complete, synthesize into `.planning/research/SUMMARY.md` coverin
 Display key findings:
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► RESEARCH COMPLETE ✓
+ learnship ► RESEARCH COMPLETE ✓
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 **Stack:** [key recommendation]
@@ -195,7 +195,7 @@ Files: .planning/research/
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► DEFINING REQUIREMENTS
+ learnship ► DEFINING REQUIREMENTS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
@@ -224,7 +224,7 @@ git add .planning/REQUIREMENTS.md && git commit -m "docs: define v1 requirements
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► CREATING ROADMAP
+ learnship ► CREATING ROADMAP
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
@@ -299,7 +299,7 @@ git add AGENTS.md && git commit -m "docs: add AGENTS.md with project context"
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► PROJECT INITIALIZED ✓
+ learnship ► PROJECT INITIALIZED ✓
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 **[Project Name]** — [N] phases, [X] requirements

@@ -61,7 +61,7 @@ If CONTEXT.md exists, read it — user decisions shape what to research.
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► RESEARCHING PHASE [N]
+ learnship ► RESEARCHING PHASE [N]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
@@ -96,7 +96,7 @@ git commit -m "docs([padded_phase]): phase research"
 Display key findings:
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► RESEARCH COMPLETE ✓
+ learnship ► RESEARCH COMPLETE ✓
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Phase [N]: [Name]

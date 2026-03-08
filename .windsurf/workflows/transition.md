@@ -154,7 +154,7 @@ git commit -m "docs: create project handoff snapshot"
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► HANDOFF READY ✓
+ learnship ► HANDOFF READY ✓
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 HANDOFF.md created at project root.

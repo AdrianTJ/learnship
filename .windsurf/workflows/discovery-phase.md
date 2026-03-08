@@ -22,7 +22,7 @@ If a description was provided, use it directly.
 Display:
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► DISCOVERY — [target area]
+ learnship ► DISCOVERY — [target area]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
@@ -157,7 +157,7 @@ git commit -m "docs([padded_phase]): discovery report for [area]"
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► DISCOVERY COMPLETE ✓
+ learnship ► DISCOVERY COMPLETE ✓
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Area: [target]

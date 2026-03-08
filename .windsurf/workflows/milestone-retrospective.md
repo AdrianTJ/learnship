@@ -37,7 +37,7 @@ cat .planning/DECISIONS.md 2>/dev/null | grep -A 8 "Phase [1-[N]]"
 Display:
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► MILESTONE RETROSPECTIVE
+ learnship ► MILESTONE RETROSPECTIVE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Milestone: [VERSION] — [Name]
@@ -156,7 +156,7 @@ git commit -m "docs: add [VERSION] retrospective and carry-forward decisions"
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► RETROSPECTIVE COMPLETE ✓
+ learnship ► RETROSPECTIVE COMPLETE ✓
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Saved: .planning/milestones/[VERSION]-RETROSPECTIVE.md

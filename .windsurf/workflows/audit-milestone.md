@@ -138,7 +138,7 @@ OR
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► MILESTONE AUDIT [VERSION]
+ learnship ► MILESTONE AUDIT [VERSION]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Requirements: [X]/[Y] satisfied

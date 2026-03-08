@@ -82,7 +82,7 @@ Read each file to verify — don't classify by filename alone.
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► ADD TESTS — Phase [N]: [name]
+ learnship ► ADD TESTS — Phase [N]: [name]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Files classified for testing:
@@ -162,7 +162,7 @@ git commit -m "test([padded_phase]): add E2E tests for [brief description]"
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► TESTS ADDED ✓
+ learnship ► TESTS ADDED ✓
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Unit tests: [N] files, [M] test cases

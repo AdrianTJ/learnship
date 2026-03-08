@@ -136,7 +136,7 @@ git commit -m "docs: update knowledge base ([N] items)"
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► KNOWLEDGE BASE UPDATED ✓
+ learnship ► KNOWLEDGE BASE UPDATED ✓
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Items: [N] total

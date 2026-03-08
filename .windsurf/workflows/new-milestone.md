@@ -110,7 +110,7 @@ Update config accordingly:
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► RESEARCHING NEW MILESTONE FEATURES
+ learnship ► RESEARCHING NEW MILESTONE FEATURES
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
@@ -177,7 +177,7 @@ git commit -m "docs: update AGENTS.md — milestone [VERSION] started"
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► MILESTONE [VERSION] INITIALIZED ✓
+ learnship ► MILESTONE [VERSION] INITIALIZED ✓
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 **[VERSION] — [Name]** — [N] phases, [X] requirements

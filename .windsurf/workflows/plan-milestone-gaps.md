@@ -146,7 +146,7 @@ git commit -m "docs(roadmap): add gap closure phases [N]-[M] for [VERSION] audit
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► GAP CLOSURE PHASES CREATED ✓
+ learnship ► GAP CLOSURE PHASES CREATED ✓
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Phases added: [N] through [M]

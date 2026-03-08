@@ -1,14 +1,14 @@
 ---
-description: Execute all plans in a phase using wave-based parallel execution
+description: Execute all plans in a phase using wave-based ordered execution
 ---
 
 # Execute Phase
 
-Execute all plans in a phase. Plans run in waves — parallel within a wave, sequential between waves.
+Execute all plans in a phase. Plans run in waves — ordered by dependencies, sequential between waves.
 
 **Usage:** `execute-phase [N]`
 
-**Core principle:** Orchestrate, don't implement directly. Describe each plan's objective clearly, spawn subagent execution, collect results.
+**Core principle:** Orchestrate, don't implement directly. Describe each plan's objective clearly, execute each plan in sequence, collect results.
 
 ## Step 1: Initialize
 
@@ -37,7 +37,7 @@ Read each PLAN.md's frontmatter to extract:
 - `autonomous` — whether this plan requires human checkpoints
 - `objective` — what this plan builds
 
-Group plans into waves based on `wave` and `depends_on` values. Plans in the same wave with no cross-dependencies can run in parallel.
+Group plans into waves based on `wave` and `depends_on` values. Plans in the same wave have no cross-dependencies and can be executed in any order.
 
 Report the execution plan:
 ```
@@ -85,7 +85,7 @@ git add [files modified]
 git commit -m "[type]([phase]-[plan]): [task description]"
 ```
 
-If the plan has `parallelization: true` in config and plans are independent, execute them concurrently (as separate subagent contexts if possible).
+Execute plans in the wave sequentially. Same-wave plans are independent so order within the wave doesn't matter.
 
 ### After each wave
 
@@ -177,7 +177,7 @@ Read `workflow.verifier` from `.planning/config.json`.
 Display:
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► VERIFYING PHASE GOAL
+ learnship ► VERIFYING PHASE GOAL
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
@@ -249,7 +249,7 @@ git commit -m "docs: update AGENTS.md — phase [X] complete"
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► PHASE [X] COMPLETE ✓
+ learnship ► PHASE [X] COMPLETE ✓
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 **Phase [X]: [Name]** — all plans complete, goals verified.

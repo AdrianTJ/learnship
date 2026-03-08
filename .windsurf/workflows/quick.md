@@ -26,7 +26,7 @@ Display banner based on active flags:
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► QUICK TASK [flags if any]
+ learnship ► QUICK TASK [flags if any]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
@@ -61,7 +61,7 @@ Report: "Creating quick task ${NEXT_NUM}: ${DESCRIPTION}"
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► DISCUSSING: [DESCRIPTION]
+ learnship ► DISCUSSING: [DESCRIPTION]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
@@ -137,7 +137,7 @@ test -f ".planning/quick/${NEXT_NUM}-${SLUG}/${NEXT_NUM}-PLAN.md" && echo "OK"
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► CHECKING PLAN
+ learnship ► CHECKING PLAN
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
@@ -189,7 +189,7 @@ After all tasks complete, write `${NEXT_NUM}-SUMMARY.md`:
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► VERIFYING RESULTS
+ learnship ► VERIFYING RESULTS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
@@ -225,7 +225,7 @@ Display completion:
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► QUICK TASK COMPLETE ✓
+ learnship ► QUICK TASK COMPLETE ✓
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Quick Task [NEXT_NUM]: [DESCRIPTION]

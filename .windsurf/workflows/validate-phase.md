@@ -161,7 +161,7 @@ git commit -m "docs([padded_phase]): update validation strategy"
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► PHASE [N] VALIDATED
+ learnship ► PHASE [N] VALIDATED
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 [N] requirements automated ✓

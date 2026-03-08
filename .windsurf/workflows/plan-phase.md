@@ -56,7 +56,7 @@ Ask: "No CONTEXT.md found for Phase [X]. Plans will use research and requirement
 Display:
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► RESEARCHING PHASE [X]
+ learnship ► RESEARCHING PHASE [X]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
@@ -86,7 +86,7 @@ If plans already exist, ask: "Phase [X] already has [N] plan(s)."
 Display:
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► PLANNING PHASE [X]
+ learnship ► PLANNING PHASE [X]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
@@ -104,7 +104,7 @@ Create 2-4 PLAN.md files in the phase directory. Each plan:
 - Has `must_haves` section with observable verification criteria
 
 **Wave assignment:**
-- Plans with no dependencies → Wave 1 (run in parallel)
+- Plans with no dependencies → Wave 1 (independent, execute in any order)
 - Plans depending on Wave 1 → Wave 2
 - Plans with cross-plan file conflicts → same wave or sequential
 
@@ -117,7 +117,7 @@ Create 2-4 PLAN.md files in the phase directory. Each plan:
 Display:
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► VERIFYING PLANS
+ learnship ► VERIFYING PLANS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
@@ -167,7 +167,7 @@ git commit -m "docs: update AGENTS.md — planning phase [N]"
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► PHASE [X] PLANNED ✓
+ learnship ► PHASE [X] PLANNED ✓
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 **Phase [X]: [Name]** — [N] plan(s) in [M] wave(s)

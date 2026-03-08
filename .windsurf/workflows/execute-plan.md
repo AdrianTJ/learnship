@@ -59,7 +59,7 @@ Read any existing SUMMARY.md files from other plans in the same phase — they c
 Display:
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► EXECUTE PLAN [phase]-[plan-id]
+ learnship ► EXECUTE PLAN [phase]-[plan-id]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Plan: [plan file name]
@@ -139,7 +139,7 @@ Write `${PLAN_FILE%-PLAN.md}-SUMMARY.md`:
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► PLAN [phase]-[plan-id] COMPLETE ✓
+ learnship ► PLAN [phase]-[plan-id] COMPLETE ✓
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 [Summary of what was built]

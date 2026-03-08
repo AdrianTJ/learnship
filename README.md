@@ -65,7 +65,7 @@ graph LR
 
 | Layer | What it does |
 |-------|-------------|
-| **Workflow Engine** | Breaks projects into spec-driven phases, creates executable plans, executes in parallel waves, verifies goals are met |
+| **Workflow Engine** | Breaks projects into spec-driven phases, creates executable plans, executes wave-ordered plans, verifies goals are met |
 | **Learning Partner** | Offers neuroscience-backed learning actions at natural workflow transitions — retrieval, reflection, spacing, struggle |
 | **Design System** | Provides design direction, anti-patterns, and steering commands for building distinctive, production-grade interfaces |
 
@@ -130,7 +130,7 @@ flowchart TD
     subgraph PHASE["For each phase"]
         DP["/discuss-phase N<br/>Capture implementation decisions"]
         PP["/plan-phase N<br/>Research + Plan + Verify"]
-        EP["/execute-phase N<br/>Wave-based parallel execution"]
+        EP["/execute-phase N<br/>Wave-ordered plan execution"]
         VW["/verify-work N<br/>Manual UAT + auto-diagnosis"]
         DP --> PP --> EP --> VW
         VW -->|"More phases?"| DP
@@ -151,7 +151,7 @@ flowchart TD
 flowchart TD
     PPN["/plan-phase N"]
 
-    subgraph RESEARCH["Phase Research (parallel)"]
+    subgraph RESEARCH["Phase Research"]
         R1["Stack researcher"]
         R2["Features researcher"]
         R3["Architecture researcher"]
@@ -174,13 +174,13 @@ flowchart TD
 flowchart LR
     EPN["/execute-phase N<br/>Analyze dependencies"]
 
-    subgraph W1["Wave 1 — independent plans (parallel)"]
-        E1["Executor A<br/>200K context → commit"]
-        E2["Executor B<br/>200K context → commit"]
+    subgraph W1["Wave 1 — independent plans (any order)"]
+        E1["Plan A<br/>execute → commit"]
+        E2["Plan B<br/>execute → commit"]
     end
 
     subgraph W2["Wave 2 — depends on Wave 1"]
-        E3["Executor C<br/>200K context → commit"]
+        E3["Plan C<br/>execute → commit"]
     end
 
     VER["Verifier<br/>Check must_haves<br/>vs. actual codebase"]
@@ -233,9 +233,9 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    MC["/map-codebase<br/>Parallel analysis"]
+    MC["/map-codebase<br/>Structured analysis"]
 
-    subgraph MAPS["Codebase mapping (parallel)"]
+    subgraph MAPS["Codebase mapping"]
         S["STACK.md"]
         A["ARCHITECTURE.md"]
         C["CONVENTIONS.md"]
@@ -258,7 +258,7 @@ flowchart LR
 | `/new-project` | Full init: questions → research → requirements → roadmap | Start of any new project |
 | `/discuss-phase [N]` | Capture implementation decisions before planning | Before every phase |
 | `/plan-phase [N]` | Research + create + verify plans | After discussing a phase |
-| `/execute-phase [N]` | Wave-based parallel execution of all plans | After planning |
+| `/execute-phase [N]` | Wave-ordered execution of all plans | After planning |
 | `/verify-work [N]` | Manual UAT with auto-diagnosis and fix planning | After execution |
 | `/complete-milestone` | Archive milestone, tag release, prepare next | All phases verified |
 | `/audit-milestone` | Pre-release: requirement coverage, stub detection | Before completing milestone |
@@ -292,7 +292,7 @@ flowchart LR
 | `/map-codebase` | Analyze existing codebase | Before `/new-project` on existing code |
 | `/discovery-phase [N]` | Map unfamiliar code area before planning | Entering complex/unfamiliar territory |
 | `/debug [description]` | Systematic triage → diagnose → fix | When something breaks |
-| `/diagnose-issues [N]` | Batch-diagnose all UAT issues in parallel | After verify-work finds multiple issues |
+| `/diagnose-issues [N]` | Batch-diagnose all UAT issues — groups by root cause | After verify-work finds multiple issues |
 | `/execute-plan [N] [id]` | Run a single plan in isolation | Re-running a failed plan |
 | `/add-todo [description]` | Capture an idea without breaking flow | Think of something mid-session |
 | `/check-todos` | Review and act on captured todos | Reviewing accumulated ideas |
@@ -440,29 +440,29 @@ learning_mode: "manual"  → only when you explicitly invoke @agentic-learning
 
 ## Design System
 
-The frontend-design skill is always active as project context for any UI work. It provides design direction, anti-patterns, and steering commands that prevent generic AI aesthetics.
+The **impeccable** skill suite is always active as project context for any UI work. It provides design direction, anti-patterns, and 17 steering commands that prevent generic AI aesthetics. Based on [@pbakaus/impeccable](https://github.com/pbakaus/impeccable).
 
-### Steering Commands
+### Commands
 
 | Command | What it does |
 |---------|-------------|
-| `/audit` | Audit UI against design quality checklist |
-| `/critique` | Get a candid design critique with specific improvement suggestions |
-| `/polish` | Refine and elevate an existing interface |
-| `/motion` | Add meaningful motion that communicates state and hierarchy |
-| `/tokens` | Design token system: color, spacing, typography, radius |
-| `/brand` | Brand coherence check across all surfaces |
-| `/typography` | Typography system audit and improvements |
-| `/color` | Color palette review using OKLCH, contrast, dark mode |
-| `/layout` | Layout and spatial rhythm review |
-| `/responsive` | Mobile-first and container query review |
-| `/interaction` | Interaction design and micro-UX review |
-| `/accessibility` | Accessibility audit: focus, contrast, screen readers |
-| `/empty-states` | Design empty states that teach the interface |
-| `/loading` | Loading state patterns and skeleton screens |
-| `/forms` | Form UX: labels, validation, error states |
-| `/copy` | UX writing review: labels, errors, empty states |
-| `/density` | Information density calibration |
+| `/teach-impeccable` | One-time setup — gathers project design context and saves persistent guidelines |
+| `/audit` | Comprehensive audit: accessibility, performance, theming, responsive design |
+| `/critique` | UX critique: visual hierarchy, information architecture, emotional resonance |
+| `/polish` | Final quality pass — alignment, spacing, consistency before shipping |
+| `/normalize` | Normalize design to match your design system for consistency |
+| `/colorize` | Add strategic color to monochromatic or flat interfaces |
+| `/animate` | Add purposeful animations and micro-interactions |
+| `/bolder` | Amplify safe or boring designs — more visual impact |
+| `/quieter` | Tone down overly aggressive designs — reduce intensity, gain refinement |
+| `/distill` | Strip to essence — remove complexity, clarify what matters |
+| `/clarify` | Improve UX copy, error messages, microcopy, labels |
+| `/optimize` | Performance: loading speed, rendering, animations, bundle size |
+| `/harden` | Resilience: error handling, i18n, text overflow, edge cases |
+| `/delight` | Add moments of joy and personality that make interfaces memorable |
+| `/extract` | Extract reusable components and design tokens into your design system |
+| `/adapt` | Adapt designs across screen sizes, devices, and contexts |
+| `/onboard` | Design onboarding flows, empty states, first-time user experiences |
 
 **The AI Slop Test:** If you showed the interface to someone and said "AI made this" — would they believe you immediately? If yes, that's the problem. Use `/critique` to find out.
 
@@ -476,7 +476,7 @@ The frontend-design skill is always active as project context for any UI work. I
 /new-project              # Answer questions, configure, approve roadmap
 /discuss-phase 1          # Lock in your implementation preferences
 /plan-phase 1             # Research + plan + verify
-/execute-phase 1          # Parallel execution
+/execute-phase 1          # Wave-ordered execution
 /verify-work 1            # Manual UAT
                           # Repeat for each phase
 /audit-milestone          # Check everything shipped
@@ -486,7 +486,7 @@ The frontend-design skill is always active as project context for any UI work. I
 ### Existing codebase (brownfield)
 
 ```
-/map-codebase             # Analyze what exists (parallel agents)
+/map-codebase             # Structured codebase analysis
 /new-project              # Questions focus on what you're ADDING
 # Normal phase workflow from here
 ```
@@ -632,7 +632,7 @@ Every project creates a structured `.planning/` directory:
         ├── 01-RESEARCH.md    # Ecosystem research findings
         ├── 01-VALIDATION.md  # Test coverage contract (Nyquist)
         ├── 01-01-PLAN.md     # Executable plan (wave 1)
-        ├── 01-02-PLAN.md     # Executable plan (wave 1, parallel)
+        ├── 01-02-PLAN.md     # Executable plan (wave 1, independent)
         ├── 01-01-SUMMARY.md  # Execution outcomes
         ├── 01-UAT.md         # User acceptance test results
         └── 01-VERIFICATION.md # Post-execution verification
@@ -697,7 +697,12 @@ learnship/
 │   ├── workflows/          # 40 workflows (Windsurf slash commands)
 │   └── skills/
 │       ├── agentic-learning/   # Learning partner (SKILL.md + references)
-│       └── frontend-design/    # Design system (SKILL.md + 7 reference files)
+│       └── impeccable/         # Design suite: 17 skills (audit, critique, polish, colorize + more)
+│           ├── frontend-design/ #   Base skill + 7 reference files (typography, color, motion…)
+│           ├── audit/           #   /audit
+│           ├── critique/        #   /critique
+│           ├── polish/          #   /polish
+│           └── …15 more/        #   /colorize /animate /bolder /quieter /distill /clarify…
 ├── agents/                 # 5 agent personas (planner, researcher, executor, verifier, debugger)
 ├── assets/                 # Brand images (banner, explainers, diagrams)
 ├── bin/

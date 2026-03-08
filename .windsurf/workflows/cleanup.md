@@ -97,7 +97,7 @@ git commit -m "chore: archive phase dirs from completed milestones"
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► CLEANUP COMPLETE ✓
+ learnship ► CLEANUP COMPLETE ✓
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Archived:

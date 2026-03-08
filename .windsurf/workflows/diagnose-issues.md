@@ -1,5 +1,5 @@
 ---
-description: Batch-diagnose multiple UAT issues in parallel after verify-work — groups by root cause, proposes fix plan
+description: Batch-diagnose multiple UAT issues after verify-work — groups by root cause, proposes fix plan
 ---
 
 # Diagnose Issues
@@ -30,7 +30,7 @@ Stop.
 Display:
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► DIAGNOSE ISSUES — Phase [N]
+ learnship ► DIAGNOSE ISSUES — Phase [N]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 [N] open issue(s) to diagnose:
@@ -133,7 +133,7 @@ git commit -m "docs([padded_phase]): add fix plans for [N] UAT issues"
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► DIAGNOSIS COMPLETE ✓
+ learnship ► DIAGNOSIS COMPLETE ✓
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Issues diagnosed: [N]

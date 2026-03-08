@@ -111,7 +111,7 @@ git commit -m "docs: capture milestone [VERSION] context"
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- AGENTIC DEV ► MILESTONE CONTEXT CAPTURED ✓
+ learnship ► MILESTONE CONTEXT CAPTURED ✓
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Milestone: [VERSION]

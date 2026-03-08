@@ -9,6 +9,24 @@ This project uses [semantic versioning](https://semver.org/): `MAJOR.MINOR.PATCH
 
 ---
 
+## [v1.2.1] — Accuracy pass: correct promises, real skill commands
+
+**Released:** 2026-03-08
+
+### Fixed
+
+- **README `## Design System`** — replaced 13 fictional commands (`/motion`, `/tokens`, `/brand`, `/typography`, etc.) with the 17 real impeccable skill commands (`/audit`, `/critique`, `/polish`, `/normalize`, `/colorize`, `/animate`, `/bolder`, `/quieter`, `/distill`, `/clarify`, `/optimize`, `/harden`, `/delight`, `/extract`, `/adapt`, `/onboard`, `/teach-impeccable`)
+- **README file tree** — `skills/` entry updated to show `impeccable/` subfolder with skill breakdown
+- **All workflows (44 occurrences)** — `AGENTIC DEV ►` banner prefix replaced with `learnship ►` (missed in v1.2.0 sweep)
+- **`execute-phase.md`** — removed false parallelism claims; wave model accurately described as dependency-ordered sequential execution
+- **`plan-phase.md`** — "run in parallel" → "independent, execute in any order"
+- **`map-codebase.md`** — "parallel agents" → "structured analysis"; banner updated
+- **`diagnose-issues.md`** — "in parallel" removed from frontmatter description
+- **README diagrams and tables** — all `parallel execution` / `parallel agents` language replaced with accurate Windsurf single-agent equivalents
+- **`impeccable/audit` and `impeccable/critique`** — `{{available_commands}}` placeholder resolved to full list of real skill commands
+
+---
+
 ## [v1.2.0] — Original Work: GSD scrubbed, impeccable skill integrated
 
 **Released:** 2026-03-08
