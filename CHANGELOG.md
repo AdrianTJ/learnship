@@ -9,6 +9,21 @@ This project uses [semantic versioning](https://semver.org/): `MAJOR.MINOR.PATCH
 
 ---
 
+## [v1.3.1] — Full consistency audit: /ls and /next propagated everywhere
+
+**Released:** 2026-03-08
+
+### Fixed
+
+- **`help.md`** — `/ls` and `/next` added to Navigation table; Quick Reference "after a break" updated; count updated 40+ → 42
+- **`transition.md`** — two `/progress` refs replaced with `/ls` and `/next`
+- **`templates/agents.md`** — `/progress` ref replaced with `/ls`
+- **`install.sh`** — `/ls` and `/next` added to post-install Quick Reference; both added to uninstall cleanup list
+- **`README.md`** — Workflow Reference callout updated 40+ → 42
+- **`publish-first-release.md`** — workflow count updated 40 → 42
+
+---
+
 ## [v1.3.0] — Simplified UX, smarter entry points, Gemini-generated image
 
 **Released:** 2026-03-08

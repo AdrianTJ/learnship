@@ -112,7 +112,7 @@ if [[ "$UNINSTALL" == true ]]; then
 
   if [[ -d "${TARGET_DIR}/workflows" ]]; then
     # Only remove our workflows (non-destructive: checks for our files)
-    for wf in new-project discuss-phase plan-phase execute-phase verify-work quick progress pause-work resume-work complete-milestone; do
+    for wf in new-project discuss-phase plan-phase execute-phase verify-work quick progress ls next pause-work resume-work complete-milestone; do
       if [[ -f "${TARGET_DIR}/workflows/${wf}.md" ]]; then
         rm "${TARGET_DIR}/workflows/${wf}.md"
         print_info "Removed workflows/${wf}.md"
@@ -237,13 +237,14 @@ fi
 
 echo ""
 echo -e "  ${BOLD}Quick reference:${RESET}"
+echo -e "  /ls                   Where am I? What's next? (start every session here)"
+echo -e "  /next                 Auto-pilot — runs the right workflow automatically"
 echo -e "  /new-project          Initialize a new project"
 echo -e "  /discuss-phase [N]    Capture implementation decisions"
 echo -e "  /plan-phase [N]       Create executable plans"
 echo -e "  /execute-phase [N]    Run all plans in a phase"
 echo -e "  /verify-work [N]      Manual acceptance testing"
 echo -e "  /quick [description]  Ad-hoc task with full guarantees"
-echo -e "  /progress             Where am I? What's next?"
 echo ""
 echo -e "  ${BOLD}Learning mode:${RESET} Set ${BOLD}learning_mode${RESET} in .planning/config.json"
 echo -e "  ${BOLD}  auto${RESET}   (default) Offered at workflow checkpoints"

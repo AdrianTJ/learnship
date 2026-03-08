@@ -16,7 +16,7 @@ You only need to remember **5 commands** to use learnship effectively:
 | `/next` | Auto-pilot — reads state and runs the right workflow for you |
 | `/new-project` | Starting a brand new project |
 | `/quick "..."` | One-off task with atomic commit, no ceremony |
-| `/help` | This screen — see all 40+ commands |
+| `/help` | This screen — see all 42 commands |
 
 Everything else below is discoverable from `/ls` as you go.
 
@@ -41,7 +41,9 @@ Everything else below is discoverable from `/ls` as you go.
 
 | Workflow | What it does |
 |----------|-------------|
-| `/progress` | Status overview + smart routing to next step |
+| `/ls` | Status + next step + offer to run it — **start every session here** |
+| `/next` | Auto-pilot: reads state and runs the right workflow automatically |
+| `/progress` | Same as `/ls` — status overview + smart routing |
 | `/resume-work` | Restore full context from last session |
 | `/pause-work` | Save handoff file when stopping mid-phase |
 | `/quick [description]` | Ad-hoc task with full guarantees and atomic commits |
@@ -126,7 +128,8 @@ Everything else below is discoverable from `/ls` as you go.
 
 **After a break:**
 ```
-/progress   (where am I?)
+/ls           (where am I? — offers to run next step)
+/next         (just keep moving — auto-pilot)
 /resume-work  (full context restoration)
 ```
 

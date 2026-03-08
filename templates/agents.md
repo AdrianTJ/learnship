@@ -100,7 +100,7 @@ This project uses **learnship**. Key facts:
 - The phase loop: `discuss-phase` → `plan-phase` → `execute-phase` → `verify-work`
 - Current status is always in `.planning/STATE.md`
 - Decisions are tracked in `.planning/DECISIONS.md` — read it before proposing approaches that may conflict
-- Run `/progress` if context is unclear about what phase we're on or what to do next
+- Run `/ls` if context is unclear about what phase we're on or what to do next — it shows status and offers to run the next step
 
 ---
 

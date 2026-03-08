@@ -175,7 +175,7 @@ AGENTS.md                   ← Windsurf reads this every conversation
 
 ## 📖 Workflow Reference — Advanced
 
-> These are all 40+ workflows. Most users discover them naturally from `/ls`. Scan this when you want to know if a specific capability exists.
+> These are all 42 workflows. Most users discover them naturally from `/ls`. Scan this when you want to know if a specific capability exists.
 
 ### Core Workflow
 

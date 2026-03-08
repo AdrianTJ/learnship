@@ -92,15 +92,16 @@ status: [current status]
 ## How to Resume
 
 ```
-/resume-work    — restore full context and continue
-/progress       — see current position and routing
+/ls             — see current position, next step, offer to run it
+/next           — auto-pilot: just picks up and runs the right workflow
+/resume-work    — full context restoration for long breaks
 ```
 
 If starting fresh context:
 1. Read `.planning/STATE.md` first
 2. Read `.planning/ROADMAP.md` to see all phases
 3. Read the most recent SUMMARY.md for the last completed phase
-4. Run `/progress` to get routing to next step
+4. Run `/ls` to get current position and routing to next step
 
 ## Key Decisions Made
 
