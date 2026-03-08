@@ -9,7 +9,31 @@ This project uses [semantic versioning](https://semver.org/): `MAJOR.MINOR.PATCH
 
 ---
 
-## v1.0.0 — Initial Public Release
+## [v1.1.0] — Install & Workflow Fixes
+
+**Released:** 2026-03-08
+
+### Added
+
+- **`new-project`** — `.windsurf/` is now automatically added to `.gitignore` on every new and existing project, preventing AI platform files from being tracked in user repos
+- **`new-project`** — new `commit_mode` configuration option: `auto` (default, commit after each workflow step) or `manual` (skip all git commits, user commits when ready)
+- **`templates/config.json`** — new `commit_mode` field with default `auto`
+- **Tests** — 3 test suites (`validate_package.sh`, `validate_workflows.sh`, `validate_skills.sh`) with 50 automated checks covering all required files, all 39 workflows, skills structure, and installer
+- **CI** — GitHub Actions: 3 jobs — `test`, `lint-shell` (shellcheck), `validate-json`; `npm test` runs the full suite
+- **`LICENSE`** — MIT license file
+- **`CODE_OF_CONDUCT.md`** — Contributor Covenant
+
+### Fixed
+
+- **`npx` installer** — project install now correctly targets the user's working directory instead of the npx cache (`INIT_CWD` → `LEARNSHIP_INSTALL_CWD`)
+- **`install.sh`** — added `realpath` guard to prevent `cp: same file` errors
+- **README** — Mermaid diagram node labels now use `<br/>` instead of `\n` (GitHub requires `<br/>` for line breaks inside nodes)
+- **README** — CI badge includes `?branch=main` and links to the workflow run page
+- **CI** — `run_all.sh` exit code fixed: `set -e` + `((VAR++))` caused false failure when counter was 0
+
+---
+
+## [v1.0.0] — Initial Public Release
 
 **Released:** 2026-03
 
