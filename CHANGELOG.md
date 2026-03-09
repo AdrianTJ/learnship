@@ -9,6 +9,32 @@ This project uses [semantic versioning](https://semver.org/): `MAJOR.MINOR.PATCH
 
 ---
 
+## [v1.5.0] — Skills on all platforms, purple ASCII banner, 101-check test suite
+
+**Released:** 2026-03-09
+
+### Added
+
+- **Skills installed on all non-Windsurf platforms** — `agentic-learning` and `impeccable` are now copied to `learnship/skills/` as context files during install on Claude Code, OpenCode, Gemini CLI, and Codex CLI. The AI reads and applies the learning techniques and design standards automatically. Windsurf keeps native `@invoke` support unchanged.
+- **Purple ASCII art banner** — `npx github:FavioVazquez/learnship` now displays a full ASCII art `learnship` logo in purple (distinct from GSD's cyan) with the slogan `Learn as you build. Build with intent.` and all 5 platform names.
+- **Section [9] skills tests** — 7 new checks in `tests/validate_multiplatform.sh` verifying skills source structure, copy correctness, SKILL.md content, impeccable sub-skills, and the Windsurf guard. Test suite now covers **101 checks total, 0 failures**.
+
+### Changed
+
+- **README: platform capabilities table** — Added `Skills (native @invoke)` and `Skills (context files)` rows showing per-platform support.
+- **README: Learning Partner section** — Added per-platform table explaining how `agentic-learning` works on each platform.
+- **README: Design System section** — Added per-platform table explaining how `impeccable` works on each platform.
+- **README: repository structure** — Accurate skill count (14 impeccable sub-skills), context files note for non-Windsurf platforms.
+- **`generate_images.py`** — `install.png` and `agents-md.png` prompts updated to be platform-agnostic (purple ASCII art, all 5 platforms listed, no Windsurf-specific copy).
+- **`assets/install.png`** — Regenerated: purple ASCII art banner, `~/.claude/learnship/` install path, all 5 platforms in annotation panel.
+- **`assets/agents-md.png`** — Regenerated: subtitle now reads "Your AI agent reads this file automatically" (no Windsurf mention).
+
+### Removed
+
+- **`.windsurf/skills/frontend-design/`** — Deleted top-level duplicate. The canonical `frontend-design` skill lives at `impeccable/frontend-design/` and is already referenced by all impeccable sub-skills.
+
+---
+
 ## [v1.4.0] — Multi-platform support: Claude Code, OpenCode, Gemini CLI, Codex CLI
 
 **Released:** 2026-03-08
