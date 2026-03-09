@@ -9,6 +9,17 @@ This project uses [semantic versioning](https://semver.org/): `MAJOR.MINOR.PATCH
 
 ---
 
+## [v1.5.1] — Fix local Windsurf install path
+
+**Released:** 2026-03-09
+
+### Fixed
+
+- **`bin/install.js`** — Local Windsurf install (`--windsurf --local`) was writing to `.codeium/windsurf/` inside the project instead of `.windsurf/`. Cascade reads `.windsurf/workflows/` — commands were installed but never loaded. Fixed `getDirName('windsurf')` to return `.windsurf` (global install correctly uses `~/.codeium/windsurf/` via `getGlobalDir` and was unaffected).
+- **`tests/validate_multiplatform.sh`** — Added regression test: local Windsurf install path must be `.windsurf/` not `.codeium/windsurf/`. Test suite now covers **102 checks, 0 failures**.
+
+---
+
 ## [v1.5.0] — Skills on all platforms, purple ASCII banner, 101-check test suite
 
 **Released:** 2026-03-09

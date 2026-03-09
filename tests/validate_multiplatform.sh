@@ -135,6 +135,14 @@ else
   fail "installer missing subagent_type=general-purpose → general conversion for OpenCode"
 fi
 
+# Local Windsurf must use .windsurf, NOT .codeium/windsurf (Cascade reads .windsurf/)
+if grep -q "windsurf.*return '.windsurf'" "$REPO/bin/install.js" || \
+   node -e "process.env.LEARNSHIP_TEST_MODE=1; const {install} = {}; const src=require('fs').readFileSync('$REPO/bin/install.js','utf8'); const m=src.match(/getDirName[\s\S]*?windsurf.*?return '([^']+)'/); process.exit(m && m[1]==='.windsurf' ? 0 : 1);" 2>/dev/null; then
+  ok "local Windsurf install uses .windsurf/ (not .codeium/windsurf/)"
+else
+  fail "local Windsurf install path wrong — must be .windsurf not .codeium/windsurf"
+fi
+
 # ──────────────────────────────────────────────────────────────────────────
 # 2. Command wrappers: commands/learnship/
 # ──────────────────────────────────────────────────────────────────────────

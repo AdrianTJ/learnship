@@ -138,7 +138,7 @@ function getDirName(platform) {
   if (platform === 'opencode') return '.opencode';
   if (platform === 'gemini')   return '.gemini';
   if (platform === 'codex')    return '.codex';
-  if (platform === 'windsurf') return '.codeium/windsurf';
+  if (platform === 'windsurf') return '.windsurf';
   return '.claude';
 }
 
