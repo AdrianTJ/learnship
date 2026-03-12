@@ -9,6 +9,28 @@ This project uses [semantic versioning](https://semver.org/): `MAJOR.MINOR.PATCH
 
 ---
 
+## [v1.6.0] — Claude Code native plugin skills
+
+**Released:** 2026-03-12
+
+### Added
+
+- **`bin/install.js` — `installClaudePlugins()`** — New function that installs skills as a native Claude Code plugin under `~/.claude/plugins/learnship/`. Creates exactly **2 skills**:
+  - `skills/agentic-learning/` — full copy with `SKILL.md` + `references/`
+  - `skills/impeccable/` — root `SKILL.md` (dispatcher) + all 18 sub-skills copied into `references/`: `adapt`, `animate`, `audit`, `bolder`, `clarify`, `colorize`, `critique`, `delight`, `distill`, `extract`, `frontend-design`, `harden`, `normalize`, `onboard`, `optimize`, `polish`, `quieter`, `teach-impeccable`
+  - `.claude-plugin/plugin.json` — plugin manifest
+- **`.windsurf/skills/impeccable/SKILL.md`** — New root skill file. Links to sub-skills using sibling paths (`adapt/SKILL.md`) which work for Windsurf. The installer rewrites these to `references/adapt/SKILL.md` when copying to the Claude Code plugin dir.
+- **Uninstall** — `plugins/learnship/` is now removed on `--uninstall` for the `claude` platform.
+- **Section [10] tests** — 10 new checks verifying plugin structure, manifest fields, two-skill count, path rewriting, all 18 references, no flattening, and uninstall guard. Test suite now covers **113 checks, 0 failures**.
+
+### Notes
+
+- The existing `learnship/skills/` context file copy is preserved for backwards compatibility.
+- Windsurf reads `impeccable/SKILL.md` directly with correct sibling-relative paths.
+- Claude Code gets the same content with paths rewritten to `references/` to match the installed layout.
+
+---
+
 ## [v1.5.3] — Fix skills missing on npx install
 
 **Released:** 2026-03-10

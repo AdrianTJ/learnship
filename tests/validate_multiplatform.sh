@@ -793,6 +793,200 @@ while IFS= read -r line; do
 done <<< "$S9_OUTPUT"
 
 # ──────────────────────────────────────────────────────────────────────────
+# 10. Claude Code native plugin structure
+# ──────────────────────────────────────────────────────────────────────────
+echo ""
+echo "  [10] Claude Code native plugin structure"
+echo "  ─────────────────────────────────────────"
+
+TMPSCRIPT10=$(mktemp /tmp/learnship-test-XXXXXX.cjs)
+cat > "$TMPSCRIPT10" << 'NODEEOF'
+process.env.LEARNSHIP_TEST_MODE = '1';
+const REPO = process.argv[2];
+const os = require('os');
+const fs = require('fs');
+const path = require('path');
+
+let pass = 0; let fail = 0;
+function check(name, fn) {
+  try { fn(); console.log('  PASS ' + name); pass++; }
+  catch(e) { console.log('  FAIL ' + name + ': ' + e.message); fail++; }
+}
+function assert(cond, msg) { if (!cond) throw new Error(msg); }
+
+const skillsSrc = path.join(REPO, '.windsurf', 'skills');
+
+// Simulate installClaudePlugins against a temp dir
+function runInstallClaudePlugins(tmpDir) {
+  const pluginDir = path.join(tmpDir, 'plugins', 'learnship');
+  const pluginSkillsDir = path.join(pluginDir, 'skills');
+  const pluginMetaDir = path.join(pluginDir, '.claude-plugin');
+
+  if (fs.existsSync(pluginDir)) fs.rmSync(pluginDir, { recursive: true });
+  fs.mkdirSync(pluginSkillsDir, { recursive: true });
+  fs.mkdirSync(pluginMetaDir, { recursive: true });
+
+  const manifest = {
+    name: 'learnship',
+    description: 'Learnship skills — agentic-learning partner and impeccable design system',
+    author: { name: 'favio-vazquez' },
+  };
+  fs.writeFileSync(path.join(pluginMetaDir, 'plugin.json'), JSON.stringify(manifest, null, 2) + '\n');
+
+  function copyDir(src, dest) {
+    fs.mkdirSync(dest, { recursive: true });
+    for (const e of fs.readdirSync(src, { withFileTypes: true })) {
+      const s = path.join(src, e.name), d = path.join(dest, e.name);
+      if (e.isDirectory()) copyDir(s, d); else fs.copyFileSync(s, d);
+    }
+  }
+
+  let count = 0;
+  for (const entry of fs.readdirSync(skillsSrc, { withFileTypes: true })) {
+    if (!entry.isDirectory()) continue;
+    const skillName = entry.name;
+    const srcPath = path.join(skillsSrc, skillName);
+    if (!fs.existsSync(path.join(srcPath, 'SKILL.md'))) continue;
+    const dest = path.join(pluginSkillsDir, skillName);
+    if (skillName === 'impeccable') {
+      // impeccable: root SKILL.md (with paths rewritten to references/) + sub-skills as references/
+      fs.mkdirSync(dest, { recursive: true });
+      let skillMdContent = fs.readFileSync(path.join(srcPath, 'SKILL.md'), 'utf8');
+      skillMdContent = skillMdContent.replace(/\]\((?!references\/)([^/)][^)]*\/SKILL\.md)\)/g, '](references/$1)');
+      fs.writeFileSync(path.join(dest, 'SKILL.md'), skillMdContent);
+      const refsDest = path.join(dest, 'references');
+      fs.mkdirSync(refsDest, { recursive: true });
+      for (const sub of fs.readdirSync(srcPath, { withFileTypes: true })) {
+        if (!sub.isDirectory()) continue;
+        const subSrc = path.join(srcPath, sub.name);
+        if (fs.existsSync(path.join(subSrc, 'SKILL.md'))) {
+          copyDir(subSrc, path.join(refsDest, sub.name));
+        }
+      }
+      count++;
+    } else {
+      copyDir(srcPath, dest);
+      count++;
+    }
+  }
+  return { pluginDir, pluginSkillsDir, pluginMetaDir, count };
+}
+
+// 1. installClaudePlugins function exists in install.js
+check('installClaudePlugins function exists in install.js', () => {
+  const src = fs.readFileSync(path.join(REPO, 'bin', 'install.js'), 'utf8');
+  assert(src.includes('function installClaudePlugins'), 'installClaudePlugins function missing');
+});
+
+// 2. installClaudePlugins is called in the claude platform block
+check('installClaudePlugins is called in the claude platform block', () => {
+  const src = fs.readFileSync(path.join(REPO, 'bin', 'install.js'), 'utf8');
+  assert(src.includes("installClaudePlugins(skillsSrc, targetDir)"), 'installClaudePlugins not called in claude block');
+});
+
+// 3. plugin.json manifest is created with correct fields
+check('plugin.json created with name, description, author', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'learnship-plugin-'));
+  const { pluginMetaDir } = runInstallClaudePlugins(tmp);
+  const manifest = JSON.parse(fs.readFileSync(path.join(pluginMetaDir, 'plugin.json'), 'utf8'));
+  assert(manifest.name === 'learnship', 'manifest.name wrong');
+  assert(typeof manifest.description === 'string' && manifest.description.length > 0, 'manifest.description missing');
+  assert(manifest.author && manifest.author.name === 'favio-vazquez', 'manifest.author wrong');
+  fs.rmSync(tmp, { recursive: true });
+});
+
+// 4. exactly 2 plugin skills: agentic-learning and impeccable
+check('exactly 2 plugin skills installed: agentic-learning and impeccable', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'learnship-plugin-'));
+  const { pluginSkillsDir, count } = runInstallClaudePlugins(tmp);
+  assert(count === 2, 'expected 2 skills (agentic-learning + impeccable), got ' + count);
+  assert(fs.existsSync(path.join(pluginSkillsDir, 'agentic-learning', 'SKILL.md')), 'agentic-learning/SKILL.md missing');
+  assert(fs.existsSync(path.join(pluginSkillsDir, 'impeccable', 'SKILL.md')), 'impeccable/SKILL.md missing');
+  fs.rmSync(tmp, { recursive: true });
+});
+
+// 5. agentic-learning has SKILL.md and references/
+check('agentic-learning: SKILL.md and references/ present in plugin', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'learnship-plugin-'));
+  const { pluginSkillsDir } = runInstallClaudePlugins(tmp);
+  const alDir = path.join(pluginSkillsDir, 'agentic-learning');
+  assert(fs.existsSync(path.join(alDir, 'SKILL.md')), 'agentic-learning/SKILL.md missing');
+  assert(fs.existsSync(path.join(alDir, 'references')), 'agentic-learning/references/ missing');
+  fs.rmSync(tmp, { recursive: true });
+});
+
+// 6. impeccable SKILL.md names all 18 actions
+check('impeccable SKILL.md references all 18 actions', () => {
+  const skillMd = fs.readFileSync(path.join(skillsSrc, 'impeccable', 'SKILL.md'), 'utf8');
+  const expected = ['adapt','animate','audit','bolder','clarify','colorize','critique',
+    'delight','distill','extract','frontend-design','harden','normalize','onboard',
+    'optimize','polish','quieter','teach-impeccable'];
+  const missing = expected.filter(s => !skillMd.includes(s));
+  assert(missing.length === 0, 'impeccable SKILL.md missing actions: ' + missing.join(', '));
+});
+
+// 7. impeccable plugin has all 18 sub-skills as references/
+check('impeccable plugin: all 18 sub-skills present in references/', () => {
+  const expected = ['adapt','animate','audit','bolder','clarify','colorize','critique',
+    'delight','distill','extract','frontend-design','harden','normalize','onboard',
+    'optimize','polish','quieter','teach-impeccable'];
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'learnship-plugin-'));
+  const { pluginSkillsDir } = runInstallClaudePlugins(tmp);
+  const refsDir = path.join(pluginSkillsDir, 'impeccable', 'references');
+  const missing = expected.filter(s => !fs.existsSync(path.join(refsDir, s, 'SKILL.md')));
+  fs.rmSync(tmp, { recursive: true });
+  assert(missing.length === 0, 'missing sub-skill references: ' + missing.join(', '));
+});
+
+// 8. no flattened sub-skills at top level of plugin skills (impeccable dir exists, not sub-skill dirs)
+check('impeccable sub-skills are NOT flattened — only agentic-learning and impeccable at top level', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'learnship-plugin-'));
+  const { pluginSkillsDir } = runInstallClaudePlugins(tmp);
+  const dirs = fs.readdirSync(pluginSkillsDir).filter(e =>
+    fs.statSync(path.join(pluginSkillsDir, e)).isDirectory()
+  );
+  assert(!dirs.includes('audit'), 'audit should not be at top level — should be inside impeccable/references/');
+  assert(!dirs.includes('polish'), 'polish should not be at top level');
+  assert(dirs.includes('impeccable'), 'impeccable/ dir should exist at top level');
+  fs.rmSync(tmp, { recursive: true });
+});
+
+// 9. impeccable SKILL.md in plugin has paths rewritten to references/ (not sibling paths)
+check('impeccable plugin SKILL.md: sibling paths rewritten to references/ for Claude Code', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'learnship-plugin-'));
+  const { pluginSkillsDir } = runInstallClaudePlugins(tmp);
+  const installedSkillMd = fs.readFileSync(path.join(pluginSkillsDir, 'impeccable', 'SKILL.md'), 'utf8');
+  // Must use references/ paths, not bare sibling paths
+  assert(installedSkillMd.includes('references/adapt/SKILL.md'), 'adapt path not rewritten to references/');
+  assert(installedSkillMd.includes('references/audit/SKILL.md'), 'audit path not rewritten to references/');
+  assert(!installedSkillMd.match(/\]\((?!references\/)adapt\/SKILL\.md\)/), 'bare adapt/SKILL.md still present');
+  fs.rmSync(tmp, { recursive: true });
+});
+
+// 10. uninstall block removes plugins/learnship/ for claude
+check('uninstall removes plugins/learnship/ for claude platform', () => {
+  const src = fs.readFileSync(path.join(REPO, 'bin', 'install.js'), 'utf8');
+  assert(
+    src.includes("platform === 'claude'") && src.includes("'plugins', 'learnship'") && src.includes('rmSync'),
+    'uninstall block missing plugins/learnship/ cleanup for claude'
+  );
+});
+
+console.log('\nSECTION10_PASS=' + pass);
+console.log('SECTION10_FAIL=' + fail);
+NODEEOF
+
+S10_OUTPUT=$(node "$TMPSCRIPT10" "$REPO" 2>&1)
+rm -f "$TMPSCRIPT10"
+
+while IFS= read -r line; do
+  case "$line" in
+    "  PASS "*) ok "${line#  PASS }" ;;
+    "  FAIL "*) fail "${line#  FAIL }" ;;
+  esac
+done <<< "$S10_OUTPUT"
+
+# ──────────────────────────────────────────────────────────────────────────
 # Summary
 # ──────────────────────────────────────────────────────────────────────────
 echo ""
