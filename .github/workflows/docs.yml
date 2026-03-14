@@ -32,7 +32,7 @@ jobs:
       - name: Install MkDocs and plugins
         run: |
           pip install \
-            "mkdocs-material<2" \
+            "mkdocs-material>=9,<10" \
             mkdocs-minify-plugin \
             pymdown-extensions \
             pillow \
