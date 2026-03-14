@@ -9,6 +9,43 @@ This project uses [semantic versioning](https://semver.org/): `MAJOR.MINOR.PATCH
 
 ---
 
+## [v1.7.0] — Full documentation site (MkDocs + GitHub Pages)
+
+**Released:** 2026-03-14
+
+### Added
+
+- **Full documentation site** at `https://faviovazquez.github.io/learnship/` — built with MkDocs Material theme
+- **`mkdocs.yml`** — complete site config with Material theme, custom brand CSS, tabbed content, admonitions, mermaid diagrams, search, and dark/light mode
+- **`docs/`** — 26 pages covering everything:
+  - Getting Started: installation, first project walkthrough, the 5 commands
+  - Platform Guide: dedicated pages for all 5 platforms (Windsurf, Claude Code, OpenCode, Gemini CLI, Codex CLI)
+  - Core Concepts: phase loop, context engineering, planning artifacts, agentic vs vibe coding
+  - Skills: full reference for all 11 `@agentic-learning` actions and all 17 `impeccable` commands
+  - Workflow Reference: all 42 workflows organized across 7 category pages
+  - Configuration: full `config.json` schema reference
+  - Examples: greenfield, brownfield, quick tasks, multi-session patterns
+  - Contributing guide
+- **`.github/workflows/docs.yml`** — auto-deploys to GitHub Pages on every push to `main` that touches `docs/` or `mkdocs.yml`
+- **8 new image definitions** in `generate_images.py` (keys: `agentic_learning_actions`, `impeccable_commands`, `platform_comparison`, `planning_artifacts`, `config_schema`, `parallel_execution`, `skills_overview`, `milestone_lifecycle`) — 16 total
+- **`docs/stylesheets/extra.css`** — brand CSS: hero section, card grids, platform badges, command pills, learn badges, typography
+- **Test section [13]** — 10 new checks in `tests/validate_multiplatform.sh` verifying mkdocs config, all platform pages, all 11 learning actions documented, docs workflow, README link, and image count — **156 total passing**
+- **README** — added docs badge + `📚 Full Docs` link + "What is learnship / What problem / Who is it for" sections with agent harness and progressive disclosure framing
+- **`docs/index.md`** — full "What is learnship / What problem / Who is it for" context sections explaining learnship as an agent harness using progressive disclosure
+- **`assets/logo.svg`** — `/ls` monospace wordmark (white, transparent background)
+- **`assets/favicon.svg`** — crisp SVG favicon: dark rounded background + white `/ls` text, infinitely sharp at any size
+- **`docs/assets`** — symlinked to `assets/` root — single source of truth, no duplication between README and docs images
+
+### Fixed
+
+- Docs hero badges all use `for-the-badge` style with `labelColor=555555` for visual consistency
+- Platform and workflows badges now clickable with correct MkDocs URL paths
+- `docs.yml` CI workflow pins `mkdocs-material<2` and resolves `docs/assets` symlink before build
+- Test section [13]: replaced gitignored `generate_images.py` check with `assets/` PNG count check
+- `new-project.md` — added parallelization question for non-Windsurf platforms during setup
+
+---
+
 ## [v1.6.3] — Deep agentic-learning integration across all workflow phases
 
 **Released:** 2026-03-14
