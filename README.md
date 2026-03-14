@@ -277,7 +277,7 @@ AGENTS.md                   ← your AI agent reads this every conversation
 
 ---
 
-## 📖 Workflow Reference
+## 📖 Workflow Reference: Advanced
 
 > These are all 42 workflows. Most users discover them naturally from `/ls`. Scan this when you want to know if a specific capability exists.
 
