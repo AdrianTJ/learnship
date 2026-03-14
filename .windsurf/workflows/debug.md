@@ -71,6 +71,35 @@ Ask: "Does any of these match what you're seeing? Or should I investigate a diff
 
 ## Step 4: Investigate
 
+Read `parallelization` from `.planning/config.json` (defaults to `false`).
+
+**If `parallelization` is `true` (subagent mode — Claude Code, OpenCode, Codex):**
+
+Spawn a dedicated debugger agent with a fresh context budget for deep investigation:
+```
+Task(
+  subagent_type="learnship-debugger",
+  prompt="
+    <objective>
+    Investigate the bug described in [session_file].
+    Trace from the user-facing symptom inward to find the root cause.
+    Find the specific file and line where behavior diverges from expected.
+    Confirm: 'If this were fixed, would the symptom go away?'
+    Write investigation findings back to [session_file].
+    </objective>
+
+    <files_to_read>
+    - [session_file] (debug session with triage + hypotheses)
+    - ./AGENTS.md or ./CLAUDE.md or ./GEMINI.md (project context, whichever exists)
+    </files_to_read>
+  "
+)
+```
+
+Wait for agent to complete, then read the updated session file.
+
+**If `parallelization` is `false` (sequential mode):**
+
 Using `@./agents/debugger.md` as your investigation persona:
 
 For the most likely hypothesis, investigate the codebase (read-only):
@@ -203,8 +232,14 @@ Session: .planning/debug/resolved/[session-file]
 
 Read `learning_mode` from `.planning/config.json`.
 
-**If `auto`:** After resolving, offer:
+**If `auto`:** After resolving, offer based on what happened:
 
-> 💡 **Learning moment:** Root cause found and fixed.
+> 💡 **Learning moment:** Root cause found and fixed. Bugs are the highest-signal learning moments — don’t let this one fade:
 >
-> `@agentic-learning either-or` — What debugging strategy worked? Log the decision path for future reference.
+> `@agentic-learning learn [bug domain]` — Active retrieval on the concept that broke. You explain the root cause first, gaps get filled. This is how "I've seen this bug" becomes real pattern recognition.
+>
+> `@agentic-learning struggle [the problem]` — Reproduce a similar problem from scratch with a hint ladder. The re-investigation builds deeper intuition than reading the fix.
+>
+> `@agentic-learning either-or` — Which debugging strategy worked (hypothesis testing, bisect, tracing)? Log it for future sessions.
+
+**If `manual`:** Add quietly: *"Tip: `@agentic-learning learn [bug domain]` · `@agentic-learning struggle [problem]` to turn this bug into a lasting pattern."*
