@@ -9,6 +9,16 @@ This project uses [semantic versioning](https://semver.org/): `MAJOR.MINOR.PATCH
 
 ---
 
+## [v1.9.7] — Fix platform detection using file path table (not env vars)
+
+**Released:** 2026-03-18
+
+### Fixed
+
+- **Platform detection was unreliable on multi-platform machines** — env-var detection returned `WINDSURF` on any machine with `~/.codeium/` installed, even when running inside Claude Code. Detection now uses a simple path-segment lookup table: the agent inspects the path of the file it is reading (e.g. `.../.claude/learnship/workflows/new-project.md`) and maps the directory segment to the platform. No bash, no env vars, not affected by `replacePaths()`.
+
+---
+
 ## [v1.9.6] — Fix all 42 Claude Code command wrappers pointing to wrong workflow path
 
 **Released:** 2026-03-18
