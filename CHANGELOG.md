@@ -9,6 +9,16 @@ This project uses [semantic versioning](https://semver.org/): `MAJOR.MINOR.PATCH
 
 ---
 
+## [v1.9.3] — Fix npx learnship showing Windsurf-only installer
+
+**Released:** 2026-03-18
+
+### Fixed
+
+- **`npx learnship` was Windsurf-only** — `bin/learnship.js` was calling `install.sh` (the old Windsurf-only shell script) instead of `bin/install.js` (the full multi-platform Node.js installer). Running `npx learnship` would show only a Windsurf prompt and fail with a source-path error. Now correctly delegates to `bin/install.js`, showing the full interactive platform selector (Windsurf, Claude Code, OpenCode, Gemini CLI, Codex CLI).
+
+---
+
 ## [v1.9.2] — Cursor plugin compliance + housekeeping
 
 **Released:** 2026-03-18
