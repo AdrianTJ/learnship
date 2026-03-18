@@ -9,6 +9,21 @@ This project uses [semantic versioning](https://semver.org/): `MAJOR.MINOR.PATCH
 
 ---
 
+## [v1.9.1] — Fix new-project workflow skipping steps + auto npm publish
+
+**Released:** 2026-03-18
+
+### Fixed
+
+- **`new-project` workflow skipping steps 5–8** — agents were jumping from questioning directly to building, bypassing the research decision, interactive requirements selection, roadmap approval, and `AGENTS.md` generation. Added explicit `⚠ STOP` gates after Steps 4, 5, 6, and 7 instructing the agent not to proceed until the user responds at each gate.
+- **`AGENTS.md` never written** — root cause was the above skip. Step 8 now carries a `🔴 MANDATORY` marker making it unambiguous that it must always be executed before Step 9, regardless of how the agent perceives the session state.
+
+### Added
+
+- **GitHub Action: auto npm publish** (`.github/workflows/publish.yml`) — triggers on any `v*` tag push. Runs the full test suite first (`tests/run_all.sh`), verifies the tag matches `package.json` version, then runs `npm publish --access public` using the `NPM_TOKEN` repo secret. No more manual `npm publish` after tagging.
+
+---
+
 ## [v1.9.0] — Multi-platform distribution: marketplaces, hooks, session context injection, npm publish
 
 **Released:** 2026-03-18

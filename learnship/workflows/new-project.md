@@ -164,11 +164,15 @@ Synthesize all gathered context into `.planning/PROJECT.md` using `@./templates/
 git add .planning/PROJECT.md && git commit -m "docs: initialize project"
 ```
 
+> **⚠ STOP — do not proceed to Step 5 until you have asked the research question below and received the user's answer.**
+
 ## Step 5: Research Decision
 
 Ask: "Research the domain ecosystem before defining requirements?"
 - **Research first** (recommended) — Discover standard stacks, expected features, architecture patterns
 - **Skip research** — I know this domain well, go straight to requirements
+
+> **⚠ STOP — wait for the user's choice before continuing.**
 
 **If Research first:**
 
@@ -202,6 +206,8 @@ Files: .planning/research/
 
 ## Step 6: Define Requirements
 
+> **⚠ STOP — do not write REQUIREMENTS.md until you have presented feature categories to the user and received their v1 selections. This is an interactive step.**
+
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  learnship ► DEFINING REQUIREMENTS
@@ -223,6 +229,8 @@ Each requirement should be:
 Create `.planning/REQUIREMENTS.md` with v1 requirements (with REQ-IDs like `AUTH-01`), v2 requirements, and out-of-scope items with reasoning.
 
 Present the full list for confirmation. If user wants adjustments, iterate.
+
+> **⚠ STOP — wait for the user to confirm the requirements list before writing REQUIREMENTS.md or continuing.**
 
 **If `commit_mode` is `auto`:**
 ```bash
@@ -266,12 +274,16 @@ Ask for approval:
 - **Adjust phases** → get feedback, revise, re-present
 - **Review full file** → show raw ROADMAP.md, then re-ask
 
+> **⚠ STOP — do not proceed to Step 8 until the user has explicitly approved the roadmap.**
+
 **If `commit_mode` is `auto`:**
 ```bash
 git add .planning/ROADMAP.md .planning/STATE.md .planning/REQUIREMENTS.md && git commit -m "docs: create roadmap ([N] phases)"
 ```
 
 ## Step 8: Generate AGENTS.md
+
+> **🔴 MANDATORY — This step must always be completed. Do not skip it, do not defer it, do not move to Step 9 without writing AGENTS.md to the project root. AGENTS.md is the persistent memory file that every future session depends on.**
 
 Copy `@./templates/agents.md` to the project root as `AGENTS.md`.
 
