@@ -9,6 +9,19 @@ This project uses [semantic versioning](https://semver.org/): `MAJOR.MINOR.PATCH
 
 ---
 
+## [v1.9.8] — Fix platform-specific gitignore and parallelization question via install-time rewriting
+
+**Released:** 2026-03-18
+
+### Fixed
+
+- **`.windsurf/` was added to `.gitignore` on Claude Code installs** — the gitignore bash block was a multi-line commented snippet; agents ran the first uncommented line (`.claude/`) on Claude Code, but the Windsurf-installed workflow kept `.windsurf/` commented out. Now `install.js` rewrites the gitignore command at install time to a single exact line per platform (e.g. `grep -q '.claude/' .gitignore || echo '.claude/' >> .gitignore` for Claude Code, `.windsurf/` for Windsurf, etc.). No conditional prose for the agent to misinterpret.
+- **Parallelization question not asked on Claude Code** — the `If PLATFORM is WINDSURF skip / else ask` conditional prose was too ambiguous for agents. `install.js` now rewrites Group D at install time: non-Windsurf platforms get the question unconditionally; Windsurf gets a note saying parallelization is automatically `false`.
+- **Platform label now injected at install time** — Step 1 states the exact platform name and config dir, removing any runtime detection logic entirely.
+- **8 new unit tests** added for `rewriteNewProject()` covering all platforms (gitignore dir, parallel block presence/absence, no raw markers remaining).
+
+---
+
 ## [v1.9.7] — Fix platform detection using file path table (not env vars)
 
 **Released:** 2026-03-18

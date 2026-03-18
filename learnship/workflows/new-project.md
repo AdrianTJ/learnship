@@ -8,27 +8,7 @@ Initialize a new project with full context gathering, optional research, require
 
 ## Step 1: Setup
 
-**Detect the current platform** by inspecting the path of the file you are currently reading (this file). The install path uniquely identifies the platform:
-
-| If this file's path contains | Platform |
-|---|---|
-| `/.claude/` | Claude Code |
-| `/.codeium/` | Windsurf |
-| `/.config/opencode/` or `/.opencode/` | OpenCode |
-| `/.gemini/` | Gemini CLI |
-| `/.codex/` | Codex CLI |
-
-Set `PLATFORM` accordingly. If you cannot determine the path, ask: "Which platform are you running? (Windsurf / Claude Code / OpenCode / Gemini CLI / Codex CLI)"
-
-Platform determines:
-- Which directory to add to `.gitignore` (so AI config files aren't tracked)
-- Whether to ask the parallelization question (Group D below)
-- The gitignore directory by platform:
-  - **Claude Code** → `.claude/`
-  - **Windsurf** → `.windsurf/`
-  - **OpenCode** → `.opencode/`
-  - **Gemini CLI** → `.gemini/`
-  - **Codex CLI** → `.codex/`
+<!-- LEARNSHIP_PLATFORM_LABEL -->
 
 Check if `.planning/PROJECT.md` already exists:
 
@@ -49,21 +29,10 @@ test -d .git && echo "HAS_GIT" || echo "NO_GIT"
 git init
 ```
 
-Add the platform config directory to `.gitignore` so AI platform files are not tracked in the project repo. Use the platform-specific directory detected above:
+Add the platform config directory to `.gitignore` so AI platform files are not tracked in the project repo:
 ```bash
-# For Claude Code:
-grep -q '.claude/' .gitignore 2>/dev/null || echo '.claude/' >> .gitignore
-# For Windsurf:
-# grep -q '.windsurf/' .gitignore 2>/dev/null || echo '.windsurf/' >> .gitignore
-# For OpenCode:
-# grep -q '.opencode/' .gitignore 2>/dev/null || echo '.opencode/' >> .gitignore
-# For Gemini CLI:
-# grep -q '.gemini/' .gitignore 2>/dev/null || echo '.gemini/' >> .gitignore
-# For Codex CLI:
-# grep -q '.codex/' .gitignore 2>/dev/null || echo '.codex/' >> .gitignore
+<!-- LEARNSHIP_GITIGNORE_CMD -->
 ```
-
-Run only the line matching the detected platform.
 
 Create the planning directory:
 ```bash
@@ -98,15 +67,7 @@ Ask: "Which workflow agents should be enabled?"
 - **Plan Check** (recommended) — Verify plans achieve their goals before execution
 - **Verifier** (recommended) — Confirm deliverables match phase goals after execution
 
-**Group D — Parallel execution:**
-
-**If PLATFORM is `WINDSURF`:** Skip this question entirely. Set `parallelization: false` automatically. Windsurf does not support real subagents.
-
-**If PLATFORM is `CLAUDE`, `OPENCODE`, `GEMINI`, or `CODEX`:** Ask this question — these platforms support real subagents:
-
-Ask: "Do you want to enable parallel subagent execution?"
-- **No** (recommended default) — Plans execute sequentially, one at a time. Safer, easier to follow.
-- **Yes** — Each independent plan in a wave gets its own dedicated subagent with a fresh context budget. Faster, but uses more tokens.
+<!-- LEARNSHIP_PARALLEL_BLOCK -->
 
 Ask: "Commit planning docs to git?"
 - **Yes** (recommended) — Planning docs tracked in version control

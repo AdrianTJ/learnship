@@ -569,7 +569,7 @@ process.env.LEARNSHIP_TEST_MODE = '1';
 const REPO = process.argv[2];
 const {
   convertToOpencode, convertAgentForGemini, convertToGeminiToml,
-  replacePaths, parseJsonc, mergeCodexConfig, generateCodexConfigBlock,
+  replacePaths, rewriteNewProject, parseJsonc, mergeCodexConfig, generateCodexConfigBlock,
   LEARNSHIP_CODEX_MARKER,
 } = require(REPO + '/bin/install.js');
 const os = require('os');
@@ -683,6 +683,67 @@ check('mergeCodexConfig Case 3: appends to file without marker', () => {
   assert(out.includes('existing_key'), 'existing content lost');
   assert(out.includes(LEARNSHIP_CODEX_MARKER), 'marker not appended');
   assert(out.includes('[agents.learnship-debugger]'), 'agent not appended');
+});
+
+// rewriteNewProject: build a minimal source with all three markers
+const NP_SRC = '<!-- LEARNSHIP_PLATFORM_LABEL -->\n```bash\n<!-- LEARNSHIP_GITIGNORE_CMD -->\n```\n<!-- LEARNSHIP_PARALLEL_BLOCK -->';
+
+// 11. Claude Code: platform label says Claude Code
+check('rewriteNewProject(claude): platform label contains "Claude Code"', () => {
+  const out = rewriteNewProject(NP_SRC, 'claude');
+  assert(out.includes('Claude Code'), 'label missing Claude Code; got:\n' + out);
+  assert(!out.includes('<!-- LEARNSHIP_PLATFORM_LABEL -->'), 'marker not replaced');
+});
+
+// 12. Claude Code: gitignore cmd uses .claude/
+check('rewriteNewProject(claude): gitignore cmd uses .claude/', () => {
+  const out = rewriteNewProject(NP_SRC, 'claude');
+  assert(out.includes('.claude/'), 'gitignore cmd missing .claude/; got:\n' + out);
+  assert(!out.includes('.windsurf/'), 'gitignore cmd must NOT contain .windsurf/');
+  assert(!out.includes('<!-- LEARNSHIP_GITIGNORE_CMD -->'), 'gitignore marker not replaced');
+});
+
+// 13. Claude Code: parallel block contains the question
+check('rewriteNewProject(claude): parallel block contains the question', () => {
+  const out = rewriteNewProject(NP_SRC, 'claude');
+  assert(out.includes('parallel subagent'), 'parallelization question missing; got:\n' + out);
+  assert(!out.includes('<!-- LEARNSHIP_PARALLEL_BLOCK -->'), 'parallel marker not replaced');
+});
+
+// 14. Windsurf: gitignore cmd uses .windsurf/
+check('rewriteNewProject(windsurf): gitignore cmd uses .windsurf/', () => {
+  const out = rewriteNewProject(NP_SRC, 'windsurf');
+  assert(out.includes('.windsurf/'), 'gitignore cmd missing .windsurf/; got:\n' + out);
+  assert(!out.includes('.claude/'), 'gitignore cmd must NOT contain .claude/');
+});
+
+// 15. Windsurf: parallel block does NOT contain the question (auto-set to false)
+check('rewriteNewProject(windsurf): parallel block skips question', () => {
+  const out = rewriteNewProject(NP_SRC, 'windsurf');
+  assert(!out.includes('parallel subagent'), 'parallelization question must not appear for Windsurf; got:\n' + out);
+  assert(out.includes('automatically set to'), 'should mention auto-set; got:\n' + out);
+});
+
+// 16. Gemini: gitignore cmd uses .gemini/
+check('rewriteNewProject(gemini): gitignore cmd uses .gemini/', () => {
+  const out = rewriteNewProject(NP_SRC, 'gemini');
+  assert(out.includes('.gemini/'), 'gitignore cmd missing .gemini/; got:\n' + out);
+  assert(!out.includes('.windsurf/'), 'must not contain .windsurf/');
+  assert(!out.includes('.claude/'), 'must not contain .claude/');
+});
+
+// 17. Gemini: parallel block asks the question
+check('rewriteNewProject(gemini): parallel block contains the question', () => {
+  const out = rewriteNewProject(NP_SRC, 'gemini');
+  assert(out.includes('parallel subagent'), 'parallelization question missing for Gemini');
+});
+
+// 18. No raw markers remain in any platform output
+check('rewriteNewProject: no raw LEARNSHIP markers remain in output', () => {
+  for (const p of ['claude', 'windsurf', 'opencode', 'gemini', 'codex']) {
+    const out = rewriteNewProject(NP_SRC, p);
+    assert(!out.includes('<!-- LEARNSHIP_'), 'raw marker found for platform ' + p + ':\n' + out);
+  }
 });
 
 console.log('\nSECTION8_PASS=' + pass);

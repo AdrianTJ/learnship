@@ -497,6 +497,7 @@ function copyDir(srcDir, destDir, pathPrefix, platform) {
     } else if (entry.name.endsWith('.md')) {
       let c = fs.readFileSync(src, 'utf8');
       c = replacePaths(c, pathPrefix, platform);
+      if (entry.name === 'new-project.md') c = rewriteNewProject(c, platform);
       if (platform === 'opencode') c = convertToOpencode(c);
       // gemini agents converted separately; body ${VAR} escaping done there
       fs.writeFileSync(dest, c);
@@ -523,6 +524,31 @@ function replacePaths(content, pathPrefix, platform) {
     c = c.replace(/~\/\.codex\//g, pathPrefix);
   }
   return c;
+}
+
+/** Rewrite new-project.md markers with exact platform-specific content at install time */
+function rewriteNewProject(content, platform) {
+  const dirName = getDirName(platform);
+  const label   = getPlatformLabel(platform);
+
+  // Platform label block
+  const platformLabel = `You are running on **${label}**. Platform config directory: \`${dirName}/\``;
+  content = content.replace('<!-- LEARNSHIP_PLATFORM_LABEL -->', platformLabel);
+
+  // Gitignore command — exact single line, no conditionals
+  const gitignoreCmd = `grep -q '${dirName}/' .gitignore 2>/dev/null || echo '${dirName}/' >> .gitignore`;
+  content = content.replace('<!-- LEARNSHIP_GITIGNORE_CMD -->', gitignoreCmd);
+
+  // Parallel execution block — present question on all platforms except Windsurf
+  let parallelBlock;
+  if (platform === 'windsurf') {
+    parallelBlock = `**Group D — Parallel execution:**\n\nWindsurf does not support real subagents. Parallelization is automatically set to \`false\`.`;
+  } else {
+    parallelBlock = `**Group D — Parallel execution:**\n\n${label} supports real subagents. Ask:\n\n"Do you want to enable parallel subagent execution?"\n- **No** (recommended default) — Plans execute sequentially, one at a time. Safer, easier to follow.\n- **Yes** — Each independent plan in a wave gets its own dedicated subagent with a fresh context budget. Faster, but uses more tokens.`;
+  }
+  content = content.replace('<!-- LEARNSHIP_PARALLEL_BLOCK -->', parallelBlock);
+
+  return content;
 }
 
 /** Install Claude Code / Windsurf commands (commands/learnship/ → target/commands/learnship/) */
@@ -1235,6 +1261,7 @@ if (process.env.LEARNSHIP_TEST_MODE) {
     installCodexAgents,
     parseJsonc,
     replacePaths,
+    rewriteNewProject,
     toHomePrefix,
     LEARNSHIP_CODEX_MARKER,
     CODEX_AGENT_SANDBOX,
