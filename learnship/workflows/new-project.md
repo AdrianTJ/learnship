@@ -8,20 +8,28 @@ Initialize a new project with full context gathering, optional research, require
 
 ## Step 1: Setup
 
-**Detect the current platform** by inspecting which config directory this workflow file lives in:
+**Detect the current platform** using environment variables and known platform indicators:
 
 ```bash
-# Check which platform config directory contains this workflow
-test -f "$HOME/.claude/learnship/workflows/new-project.md" && echo "CLAUDE" || \
-test -f "./.claude/learnship/workflows/new-project.md" && echo "CLAUDE" || \
-test -f "$HOME/.config/opencode/learnship/workflows/new-project.md" && echo "OPENCODE" || \
-test -f "./.opencode/learnship/workflows/new-project.md" && echo "OPENCODE" || \
-test -f "$HOME/.gemini/learnship/workflows/new-project.md" && echo "GEMINI" || \
-test -f "$HOME/.codex/learnship/workflows/new-project.md" && echo "CODEX" || \
-echo "WINDSURF"
+# Detect platform via environment variables set by each AI tool
+if [ -n "$CLAUDE_CONFIG_DIR" ] || [ -n "$ANTHROPIC_API_KEY" ] || command -v claude >/dev/null 2>&1; then
+  echo "CLAUDE"
+elif [ -n "$OPENCODE_CONFIG_DIR" ] || command -v opencode >/dev/null 2>&1; then
+  echo "OPENCODE"
+elif [ -n "$GEMINI_API_KEY" ] || command -v gemini >/dev/null 2>&1; then
+  echo "GEMINI"
+elif [ -n "$OPENAI_API_KEY" ] && command -v codex >/dev/null 2>&1; then
+  echo "CODEX"
+elif [ -d "$HOME/.codeium" ] || [ -n "$WINDSURF_CONFIG_DIR" ]; then
+  echo "WINDSURF"
+else
+  echo "UNKNOWN"
+fi
 ```
 
-Set `PLATFORM` to the detected value. If detection is ambiguous (e.g. multiple matches), ask: "Which platform are you running? (Windsurf / Claude Code / OpenCode / Gemini CLI / Codex CLI)"
+**If result is `UNKNOWN`:** Ask the user directly: "Which platform are you running? (Windsurf / Claude Code / OpenCode / Gemini CLI / Codex CLI)"
+
+Set `PLATFORM` to the detected value.
 
 Platform determines:
 - Which directory to add to `.gitignore` (so AI config files aren't tracked)
@@ -54,10 +62,19 @@ git init
 
 Add the platform config directory to `.gitignore` so AI platform files are not tracked in the project repo. Use the platform-specific directory detected above:
 ```bash
-# Example for Claude Code:
+# For Claude Code:
 grep -q '.claude/' .gitignore 2>/dev/null || echo '.claude/' >> .gitignore
-# (use the correct dir for the detected platform)
+# For Windsurf:
+# grep -q '.windsurf/' .gitignore 2>/dev/null || echo '.windsurf/' >> .gitignore
+# For OpenCode:
+# grep -q '.opencode/' .gitignore 2>/dev/null || echo '.opencode/' >> .gitignore
+# For Gemini CLI:
+# grep -q '.gemini/' .gitignore 2>/dev/null || echo '.gemini/' >> .gitignore
+# For Codex CLI:
+# grep -q '.codex/' .gitignore 2>/dev/null || echo '.codex/' >> .gitignore
 ```
+
+Run only the line matching the detected platform.
 
 Create the planning directory:
 ```bash
