@@ -8,7 +8,8 @@
   <a href="https://faviovazquez.github.io/learnship/"><img src="https://img.shields.io/badge/docs-faviovazquez.github.io%2Flearnship-2563eb" alt="Documentation"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-22c55e.svg" alt="License: MIT"></a>
   <a href="https://github.com/FavioVazquez/learnship/stargazers"><img src="https://img.shields.io/github/stars/FavioVazquez/learnship?style=flat&color=f59e0b" alt="Stars"></a>
-  <img src="https://img.shields.io/badge/platforms-5-0ea5e9" alt="5 platforms">
+  <a href="https://www.npmjs.com/package/learnship"><img src="https://img.shields.io/npm/v/learnship?color=cb3837&label=npm" alt="npm"></a>
+  <img src="https://img.shields.io/badge/platforms-6-0ea5e9" alt="6 platforms">
   <img src="https://img.shields.io/badge/workflows-42-3b82f6" alt="42 workflows">
 </p>
 
@@ -32,9 +33,9 @@ learnship is an **agent harness** for anyone who wants to build, learn, and ship
 
 Every serious AI coding tool (Claude Code, Cursor, Manus, Devin) converges on the same architecture: a simple execution loop wraps the model, and the **harness** decides what information reaches the model, when, and how. The model is interchangeable. The harness is the product.
 
-learnship gives you that harness as a portable, open-source layer that runs inside Windsurf, Claude Code, OpenCode, Gemini CLI, or Codex CLI and adds three things your agent doesn't have by default:
+learnship gives you that harness as a portable, open-source layer that runs inside Windsurf, Claude Code, Cursor, OpenCode, Gemini CLI, or Codex CLI and adds three things your agent doesn't have by default:
 
-- **Persistent memory.** An `AGENTS.md` file is loaded into every session so the agent always knows the project, current phase, tech stack, and past decisions. No more repeating yourself.
+- **Persistent memory.** `/new-project` generates an `AGENTS.md` at your project root. Windsurf, Claude Code, and Cursor load it automatically every session; on other platforms the workflows reference it explicitly. No more repeating yourself.
 - **Structured process.** A repeatable phase loop (Discuss → Plan → Execute → Verify) with spec-driven plans, wave-ordered execution, and UAT-driven verification. The harness controls what context reaches the agent at each step.
 - **Built-in learning.** Neuroscience-backed checkpoints at every phase transition so you understand what you shipped, not just that you shipped it.
 
@@ -83,19 +84,38 @@ It's probably overkill if you just need one-off scripts or quick fixes. Use `/qu
 
 ![Install learnship](assets/install.png)
 
+**Via npm (all platforms — recommended):**
+
 ```bash
-# Runs directly from GitHub, no clone needed
-npx github:FavioVazquez/learnship
+npx learnship
 ```
 
 The installer auto-detects your platform. Choose **global** (all projects) or **local** (current project only):
 
 ```bash
-npx github:FavioVazquez/learnship --global   # all projects
-npx github:FavioVazquez/learnship --local    # this project only
+npx learnship --global   # all projects
+npx learnship --local    # this project only
+```
+
+**Via platform marketplace (no terminal required):**
+
+```bash
+# Claude Code — community marketplace
+/plugin marketplace add FavioVazquez/learnship-marketplace
+/plugin install learnship@learnship-marketplace
+
+# Cursor — after marketplace approval
+/add-plugin learnship
+
+# Gemini CLI — native extension
+gemini extensions install https://github.com/FavioVazquez/learnship
 ```
 
 Or specify your platform explicitly. See [Platform Support](#-platform-support) below.
+
+### Why `npx learnship`?
+
+learnship v1.9.0 is published to npm — `npx learnship` pulls the latest release directly. No `github:` prefix, no clone needed, no version pinning. The same `bin/install.js` runs regardless of whether you install via npm, marketplace, or native extension.
 
 ### 2. Start your AI agent and type
 
@@ -114,9 +134,9 @@ The full documentation site is at **[faviovazquez.github.io/learnship](https://f
 What's covered:
 
 - **[Getting Started](https://faviovazquez.github.io/learnship/getting-started/installation/)**: install commands, first project walkthrough, the 5 commands you need to know
-- **[Platform Guide](https://faviovazquez.github.io/learnship/platform-guide/windsurf/)**: dedicated pages for Windsurf, Claude Code, OpenCode, Gemini CLI, and Codex CLI
+- **[Platform Guide](https://faviovazquez.github.io/learnship/platform-guide/windsurf/)**: dedicated pages for Windsurf, Claude Code, Cursor, OpenCode, Gemini CLI, and Codex CLI
 - **[Core Concepts](https://faviovazquez.github.io/learnship/core-concepts/phase-loop/)**: phase loop, context engineering, planning artifacts, agentic vs vibe coding
-- **[Skills](https://faviovazquez.github.io/learnship/skills/agentic-learning/)**: all 11 `@agentic-learning` actions and all 17 `impeccable` design commands
+- **[Skills](https://faviovazquez.github.io/learnship/skills/agentic-learning/)**: all 11 `@agentic-learning` actions and all 18 `impeccable` design commands
 - **[Workflow Reference](https://faviovazquez.github.io/learnship/workflow-reference/core/)**: all 42 workflows documented with when and why to use each
 - **[Configuration](https://faviovazquez.github.io/learnship/configuration/)**: full `.planning/config.json` schema, speed presets, parallelization
 
@@ -124,19 +144,20 @@ What's covered:
 
 ## 🌐 Platform Support
 
-learnship works on **5 platforms**. Pick your tool:
+learnship works on **6 platforms**. Pick your tool:
 
 | Platform | Install command | Invoke commands as |
 |----------|----------------|-------------------|
-| **Windsurf** | `npx github:FavioVazquez/learnship --windsurf --global` | `/ls`, `/new-project` |
-| **Claude Code** | `npx github:FavioVazquez/learnship --claude --global` | `/learnship:ls`, `/learnship:new-project` |
-| **OpenCode** | `npx github:FavioVazquez/learnship --opencode --global` | `/learnship-ls`, `/learnship-new-project` |
-| **Gemini CLI** | `npx github:FavioVazquez/learnship --gemini --global` | `/learnship:ls`, `/learnship:new-project` |
-| **Codex CLI** | `npx github:FavioVazquez/learnship --codex --global` | `$learnship-ls`, `$learnship-new-project` |
+| **Windsurf** | `npx learnship --windsurf --global` | `/ls`, `/new-project` |
+| **Claude Code** | `npx learnship --claude --global` | `/learnship:ls`, `/learnship:new-project` |
+| **Cursor** | `/add-plugin learnship` *(after marketplace approval)* | `@learnship` rules load automatically |
+| **OpenCode** | `npx learnship --opencode --global` | `/learnship-ls`, `/learnship-new-project` |
+| **Gemini CLI** | `npx learnship --gemini --global` | `/learnship:ls`, `/learnship:new-project` |
+| **Codex CLI** | `npx learnship --codex --global` | `$learnship-ls`, `$learnship-new-project` |
 
 ```bash
 # All platforms at once
-npx github:FavioVazquez/learnship --all --global
+npx learnship --all --global
 ```
 
 ### 🤖 Platform capabilities
@@ -213,7 +234,7 @@ Three integrated layers that reinforce each other:
 |-------|-------------|
 | **Workflow Engine** | Spec-driven phases → context-engineered plans → wave-ordered execution → verified delivery |
 | **Learning Partner** | Neuroscience-backed checkpoints at every phase transition: retrieval, reflection, spacing, struggle |
-| **Design System** | 17 impeccable steering commands for production-grade UI: `/audit`, `/critique`, `/polish`, and more |
+| **Design System** | 18 impeccable steering commands for production-grade UI: `/audit`, `/critique`, `/polish`, and more |
 
 ```mermaid
 graph LR
@@ -263,7 +284,7 @@ flowchart LR
 
 ![AGENTS.md](assets/agents-md.png)
 
-`/new-project` generates an `AGENTS.md` at your project root. Your AI agent reads it as a persistent system rule for every conversation, so it always knows where the project stands without you repeating yourself.
+`/new-project` generates an `AGENTS.md` at your project root. On Windsurf, Claude Code, and Cursor it is loaded automatically every session as a project rule. On OpenCode, Gemini CLI, and Codex CLI the learnship workflows reference it explicitly. Either way, the agent always knows the project, current phase, tech stack, and past decisions without you repeating yourself.
 
 ```
 AGENTS.md                   ← your AI agent reads this every conversation

@@ -41,10 +41,10 @@ else
 fi
 
 # .windsurf/skills must be in package.json "files" — otherwise npx strips it and skills are never found
-if node -e "const pkg=require('$REPO/package.json'); process.exit(pkg.files && pkg.files.includes('.windsurf/skills') ? 0 : 1);" 2>/dev/null; then
-  ok "package.json files includes .windsurf/skills (required for npx delivery)"
+if node -e "const pkg=require('$REPO/package.json'); process.exit(pkg.files && pkg.files.includes('skills') ? 0 : 1);" 2>/dev/null; then
+  ok "package.json files includes skills/ (required for npx delivery)"
 else
-  fail "package.json files missing .windsurf/skills — skills will be absent when installed via npx"
+  fail "package.json files missing skills/ — skills will be absent when installed via npx"
 fi
 
 # Check key functions exist in installer
@@ -136,6 +136,25 @@ else
   fail "Codex config block missing max_depth"
 fi
 
+# Regression: commands/learnship/ must NOT contain @~/.claude/learnship/ (double learnship/ after install)
+# Source files use @~/.claude/workflows/ so replacePaths() resolves them to
+# pathPrefix+workflows/ = ~/.claude/learnship/workflows/ — not double learnship/learnship/
+DOUBLE_COUNT=$(grep -rl "@~/.claude/learnship/" "$REPO/commands/learnship/" 2>/dev/null | wc -l)
+if [ "$DOUBLE_COUNT" -eq 0 ]; then
+  ok "commands/learnship/ source files have no @~/.claude/learnship/ double-path refs (regression: install would produce learnship/learnship/)"
+else
+  fail "commands/learnship/ has $DOUBLE_COUNT file(s) with @~/.claude/learnship/ — install will produce broken learnship/learnship/ paths"
+fi
+
+# Regression: all command source files must use @~/.claude/workflows/ for workflow refs
+WORKFLOW_COUNT=$(grep -rl "@~/.claude/workflows/" "$REPO/commands/learnship/" 2>/dev/null | wc -l)
+EXPECTED_COUNT=$(ls "$REPO/commands/learnship/"*.md 2>/dev/null | wc -l)
+if [ "$WORKFLOW_COUNT" -eq "$EXPECTED_COUNT" ]; then
+  ok "all $EXPECTED_COUNT command source files use @~/.claude/workflows/ for cross-platform path resolution"
+else
+  fail "only $WORKFLOW_COUNT of $EXPECTED_COUNT command files use @~/.claude/workflows/ — remaining will break on non-Claude platforms"
+fi
+
 if grep -q 'replace.*subagent_type.*general-purpose.*general' "$REPO/bin/install.js"; then
   ok "installer converts subagent_type=general-purpose → general for OpenCode"
 else
@@ -195,9 +214,9 @@ for f in "$COMMANDS_DIR"/*.md; do
     fail "commands/learnship/$name.md missing 'allowed-tools:' field"
     WRAPPER_ISSUES=$((WRAPPER_ISSUES+1))
   fi
-  # Must have execution_context referencing the workflow
-  if ! grep -q "@~/.claude/learnship/workflows/" "$f"; then
-    fail "commands/learnship/$name.md missing @~/.claude/learnship/workflows/ reference"
+  # Must have execution_context referencing the workflow (no learnship/ prefix — replacePaths adds it)
+  if ! grep -q "@~/.claude/workflows/" "$f"; then
+    fail "commands/learnship/$name.md missing @~/.claude/workflows/ reference"
     WRAPPER_ISSUES=$((WRAPPER_ISSUES+1))
   fi
 done
@@ -1552,7 +1571,7 @@ check('docs/index.md exists and contains npx install command', () => {
   const indexPath = path.join(DOCS, 'index.md');
   assert(fs.existsSync(indexPath), 'docs/index.md not found');
   const content = fs.readFileSync(indexPath, 'utf8');
-  assert(content.includes('npx github:FavioVazquez/learnship'), 'install command missing from docs/index.md');
+  assert(content.includes('npx learnship'), 'install command missing from docs/index.md');
 });
 
 // 5. All 5 platform guide pages exist
@@ -1733,6 +1752,527 @@ while IFS= read -r line; do
     "  FAIL "*) fail "${line#  FAIL }" ;;
   esac
 done <<< "$S14_OUTPUT"
+
+# ──────────────────────────────────────────────────────────────────────────
+# Section 15: Claude Code plugin manifest
+# ──────────────────────────────────────────────────────────────────────────
+TMPSCRIPT15=$(mktemp /tmp/ls_test15_XXXXXX.js)
+cat > "$TMPSCRIPT15" << 'NODEEOF'
+const fs = require('fs');
+const path = require('path');
+const REPO = process.argv[2];
+let pass = 0, fail = 0;
+function check(name, fn) {
+  try { fn(); console.log('  PASS ' + name); pass++; }
+  catch(e) { console.log('  FAIL ' + name + ' — ' + e.message); fail++; }
+}
+function assert(cond, msg) { if (!cond) throw new Error(msg); }
+
+// 1. .claude-plugin/plugin.json exists
+check('.claude-plugin/plugin.json exists', () => {
+  const p = path.join(REPO, '.claude-plugin', 'plugin.json');
+  assert(fs.existsSync(p), '.claude-plugin/plugin.json not found');
+});
+
+// 2. Claude Code plugin.json has required fields
+check('.claude-plugin/plugin.json has required fields (name, description, version)', () => {
+  const p = path.join(REPO, '.claude-plugin', 'plugin.json');
+  const cfg = JSON.parse(fs.readFileSync(p, 'utf8'));
+  assert(cfg.name === 'learnship', 'name must be "learnship"');
+  assert(typeof cfg.description === 'string' && cfg.description.length > 10, 'description missing or too short');
+  assert(typeof cfg.version === 'string' && cfg.version.match(/^\d+\.\d+\.\d+$/), 'version not semver');
+});
+
+// 3. Claude Code plugin.json paths point to real directories
+check('.claude-plugin/plugin.json paths point to real directories', () => {
+  const p = path.join(REPO, '.claude-plugin', 'plugin.json');
+  const cfg = JSON.parse(fs.readFileSync(p, 'utf8'));
+  if (cfg.commands) assert(fs.existsSync(path.join(REPO, cfg.commands)), `commands dir not found: ${cfg.commands}`);
+  if (cfg.agents) assert(fs.existsSync(path.join(REPO, cfg.agents)), `agents dir not found: ${cfg.agents}`);
+  if (cfg.skills) assert(fs.existsSync(path.join(REPO, cfg.skills)), `skills dir not found: ${cfg.skills}`);
+});
+
+// 4. Claude Code plugin.json version matches package.json
+check('.claude-plugin/plugin.json version matches package.json', () => {
+  const pluginCfg = JSON.parse(fs.readFileSync(path.join(REPO, '.claude-plugin', 'plugin.json'), 'utf8'));
+  const pkgCfg = JSON.parse(fs.readFileSync(path.join(REPO, 'package.json'), 'utf8'));
+  assert(pluginCfg.version === pkgCfg.version,
+    `plugin.json version (${pluginCfg.version}) does not match package.json (${pkgCfg.version})`);
+});
+
+// 5. Marketplace manifest exists
+check('marketplace/.claude-plugin/marketplace.json exists', () => {
+  const p = path.join(REPO, 'marketplace', '.claude-plugin', 'marketplace.json');
+  assert(fs.existsSync(p), 'marketplace/.claude-plugin/marketplace.json not found');
+});
+
+// 6. Marketplace manifest has required fields
+check('marketplace manifest has name, owner, plugins array', () => {
+  const p = path.join(REPO, 'marketplace', '.claude-plugin', 'marketplace.json');
+  const cfg = JSON.parse(fs.readFileSync(p, 'utf8'));
+  assert(typeof cfg.name === 'string', 'marketplace name missing');
+  assert(cfg.owner && cfg.owner.name, 'marketplace owner.name missing');
+  assert(Array.isArray(cfg.plugins) && cfg.plugins.length > 0, 'plugins array missing or empty');
+  assert(cfg.plugins[0].name === 'learnship', 'first plugin name must be learnship');
+});
+
+// 7. Plugin manifests do NOT reference .windsurf/skills (platform-neutral skills/)
+check('plugin manifests use skills/ not .windsurf/skills', () => {
+  const claudeCfg = JSON.parse(fs.readFileSync(path.join(REPO, '.claude-plugin', 'plugin.json'), 'utf8'));
+  const cursorCfg = JSON.parse(fs.readFileSync(path.join(REPO, '.cursor-plugin', 'plugin.json'), 'utf8'));
+  assert(!String(claudeCfg.skills || '').includes('.windsurf'),
+    '.claude-plugin/plugin.json skills must not reference .windsurf/');
+  assert(!String(cursorCfg.skills || '').includes('.windsurf'),
+    '.cursor-plugin/plugin.json skills must not reference .windsurf/');
+  assert(claudeCfg.skills === 'skills', `.claude-plugin skills should be "skills", got "${claudeCfg.skills}"`);
+  assert(cursorCfg.skills === 'skills', `.cursor-plugin skills should be "skills", got "${cursorCfg.skills}"`);
+});
+
+// 8. skills/ directory exists and has both skill subdirectories
+check('skills/ directory exists with agentic-learning and impeccable', () => {
+  const skillsDir = path.join(REPO, 'skills');
+  assert(fs.existsSync(skillsDir), 'skills/ directory not found');
+  assert(fs.existsSync(path.join(skillsDir, 'agentic-learning')), 'skills/agentic-learning/ missing');
+  assert(fs.existsSync(path.join(skillsDir, 'impeccable')), 'skills/impeccable/ missing');
+  assert(fs.existsSync(path.join(skillsDir, 'agentic-learning', 'SKILL.md')), 'skills/agentic-learning/SKILL.md missing');
+  assert(fs.existsSync(path.join(skillsDir, 'impeccable', 'SKILL.md')), 'skills/impeccable/SKILL.md missing');
+});
+
+// 9. Plugin manifests reference hooks
+check('.claude-plugin/plugin.json has hooks field', () => {
+  const cfg = JSON.parse(fs.readFileSync(path.join(REPO, '.claude-plugin', 'plugin.json'), 'utf8'));
+  assert(typeof cfg.hooks === 'string', '.claude-plugin/plugin.json missing hooks field');
+});
+
+check('.cursor-plugin/plugin.json has hooks field', () => {
+  const cfg = JSON.parse(fs.readFileSync(path.join(REPO, '.cursor-plugin', 'plugin.json'), 'utf8'));
+  assert(typeof cfg.hooks === 'string', '.cursor-plugin/plugin.json missing hooks field');
+});
+
+console.log('\nSECTION15_PASS=' + pass);
+console.log('SECTION15_FAIL=' + fail);
+NODEEOF
+
+S15_OUTPUT=$(node "$TMPSCRIPT15" "$REPO" 2>&1)
+rm -f "$TMPSCRIPT15"
+
+while IFS= read -r line; do
+  case "$line" in
+    "  PASS "*) ok "${line#  PASS }" ;;
+    "  FAIL "*) fail "${line#  FAIL }" ;;
+  esac
+done <<< "$S15_OUTPUT"
+
+# ──────────────────────────────────────────────────────────────────────────
+# Section 16: Cursor plugin manifest
+# ──────────────────────────────────────────────────────────────────────────
+TMPSCRIPT16=$(mktemp /tmp/ls_test16_XXXXXX.js)
+cat > "$TMPSCRIPT16" << 'NODEEOF'
+const fs = require('fs');
+const path = require('path');
+const REPO = process.argv[2];
+let pass = 0, fail = 0;
+function check(name, fn) {
+  try { fn(); console.log('  PASS ' + name); pass++; }
+  catch(e) { console.log('  FAIL ' + name + ' — ' + e.message); fail++; }
+}
+function assert(cond, msg) { if (!cond) throw new Error(msg); }
+
+// 1. .cursor-plugin/plugin.json exists
+check('.cursor-plugin/plugin.json exists', () => {
+  const p = path.join(REPO, '.cursor-plugin', 'plugin.json');
+  assert(fs.existsSync(p), '.cursor-plugin/plugin.json not found');
+});
+
+// 2. Cursor plugin.json has required fields
+check('.cursor-plugin/plugin.json has required fields (name, description, version)', () => {
+  const p = path.join(REPO, '.cursor-plugin', 'plugin.json');
+  const cfg = JSON.parse(fs.readFileSync(p, 'utf8'));
+  assert(cfg.name === 'learnship', 'name must be "learnship"');
+  assert(typeof cfg.description === 'string' && cfg.description.length > 10, 'description missing or too short');
+  assert(typeof cfg.version === 'string' && cfg.version.match(/^\d+\.\d+\.\d+$/), 'version not semver');
+});
+
+// 3. Cursor plugin.json paths point to real directories
+check('.cursor-plugin/plugin.json paths point to real directories', () => {
+  const p = path.join(REPO, '.cursor-plugin', 'plugin.json');
+  const cfg = JSON.parse(fs.readFileSync(p, 'utf8'));
+  if (cfg.skills) assert(fs.existsSync(path.join(REPO, cfg.skills)), `skills dir not found: ${cfg.skills}`);
+  if (cfg.rules) assert(fs.existsSync(path.join(REPO, cfg.rules)), `rules dir not found: ${cfg.rules}`);
+  if (cfg.agents) assert(fs.existsSync(path.join(REPO, cfg.agents)), `agents dir not found: ${cfg.agents}`);
+});
+
+// 4. Cursor plugin.json version matches package.json
+check('.cursor-plugin/plugin.json version matches package.json', () => {
+  const pluginCfg = JSON.parse(fs.readFileSync(path.join(REPO, '.cursor-plugin', 'plugin.json'), 'utf8'));
+  const pkgCfg = JSON.parse(fs.readFileSync(path.join(REPO, 'package.json'), 'utf8'));
+  assert(pluginCfg.version === pkgCfg.version,
+    `cursor plugin.json version (${pluginCfg.version}) does not match package.json (${pkgCfg.version})`);
+});
+
+// 5. cursor-rules/learnship.mdc exists
+check('cursor-rules/learnship.mdc exists', () => {
+  const p = path.join(REPO, 'cursor-rules', 'learnship.mdc');
+  assert(fs.existsSync(p), 'cursor-rules/learnship.mdc not found');
+});
+
+// 6. cursor-rules/learnship.mdc has frontmatter and content
+check('cursor-rules/learnship.mdc has valid frontmatter and workflow table', () => {
+  const content = fs.readFileSync(path.join(REPO, 'cursor-rules', 'learnship.mdc'), 'utf8');
+  assert(content.startsWith('---'), 'Missing YAML frontmatter');
+  assert(content.includes('name:') && content.includes('description:'), 'Missing name/description in frontmatter');
+  assert(content.includes('/ls') && content.includes('/new-project'), 'Missing core workflow commands');
+  assert(content.includes('.planning/'), 'Missing .planning/ reference');
+});
+
+console.log('\nSECTION16_PASS=' + pass);
+console.log('SECTION16_FAIL=' + fail);
+NODEEOF
+
+S16_OUTPUT=$(node "$TMPSCRIPT16" "$REPO" 2>&1)
+rm -f "$TMPSCRIPT16"
+
+while IFS= read -r line; do
+  case "$line" in
+    "  PASS "*) ok "${line#  PASS }" ;;
+    "  FAIL "*) fail "${line#  FAIL }" ;;
+  esac
+done <<< "$S16_OUTPUT"
+
+# ──────────────────────────────────────────────────────────────────────────
+# Section 17: Gemini extension manifest
+# ──────────────────────────────────────────────────────────────────────────
+TMPSCRIPT17=$(mktemp /tmp/ls_test17_XXXXXX.js)
+cat > "$TMPSCRIPT17" << 'NODEEOF'
+const fs = require('fs');
+const path = require('path');
+const REPO = process.argv[2];
+let pass = 0, fail = 0;
+function check(name, fn) {
+  try { fn(); console.log('  PASS ' + name); pass++; }
+  catch(e) { console.log('  FAIL ' + name + ' — ' + e.message); fail++; }
+}
+function assert(cond, msg) { if (!cond) throw new Error(msg); }
+
+// 1. gemini-extension.json exists at repo root
+check('gemini-extension.json exists at repo root', () => {
+  const p = path.join(REPO, 'gemini-extension.json');
+  assert(fs.existsSync(p), 'gemini-extension.json not found at repo root');
+});
+
+// 2. gemini-extension.json has required fields
+check('gemini-extension.json has name, version, description, installDir', () => {
+  const p = path.join(REPO, 'gemini-extension.json');
+  const cfg = JSON.parse(fs.readFileSync(p, 'utf8'));
+  assert(cfg.name === 'learnship', 'name must be "learnship"');
+  assert(typeof cfg.version === 'string' && cfg.version.match(/^\d+\.\d+\.\d+$/), 'version not semver');
+  assert(typeof cfg.description === 'string' && cfg.description.length > 10, 'description missing or too short');
+  assert(cfg.installDir === '.gemini', 'installDir must be ".gemini"');
+});
+
+// 3. gemini-extension.json version matches package.json
+check('gemini-extension.json version matches package.json', () => {
+  const extCfg = JSON.parse(fs.readFileSync(path.join(REPO, 'gemini-extension.json'), 'utf8'));
+  const pkgCfg = JSON.parse(fs.readFileSync(path.join(REPO, 'package.json'), 'utf8'));
+  assert(extCfg.version === pkgCfg.version,
+    `gemini-extension.json version (${extCfg.version}) does not match package.json (${pkgCfg.version})`);
+});
+
+console.log('\nSECTION17_PASS=' + pass);
+console.log('SECTION17_FAIL=' + fail);
+NODEEOF
+
+S17_OUTPUT=$(node "$TMPSCRIPT17" "$REPO" 2>&1)
+rm -f "$TMPSCRIPT17"
+
+while IFS= read -r line; do
+  case "$line" in
+    "  PASS "*) ok "${line#  PASS }" ;;
+    "  FAIL "*) fail "${line#  FAIL }" ;;
+  esac
+done <<< "$S17_OUTPUT"
+
+# ──────────────────────────────────────────────────────────────────────────
+# Section 18: npm publishability
+# ──────────────────────────────────────────────────────────────────────────
+TMPSCRIPT18=$(mktemp /tmp/ls_test18_XXXXXX.js)
+cat > "$TMPSCRIPT18" << 'NODEEOF'
+const fs = require('fs');
+const path = require('path');
+const REPO = process.argv[2];
+let pass = 0, fail = 0;
+function check(name, fn) {
+  try { fn(); console.log('  PASS ' + name); pass++; }
+  catch(e) { console.log('  FAIL ' + name + ' — ' + e.message); fail++; }
+}
+function assert(cond, msg) { if (!cond) throw new Error(msg); }
+
+// 1. package.json has files field
+check('package.json has files field for npm publish', () => {
+  const pkg = JSON.parse(fs.readFileSync(path.join(REPO, 'package.json'), 'utf8'));
+  assert(Array.isArray(pkg.files) && pkg.files.length > 0, 'package.json missing files field');
+});
+
+// 2. package.json files field includes new manifests
+check('package.json files includes .claude-plugin, .cursor-plugin, cursor-rules', () => {
+  const pkg = JSON.parse(fs.readFileSync(path.join(REPO, 'package.json'), 'utf8'));
+  assert(pkg.files.includes('.claude-plugin'), 'files missing .claude-plugin');
+  assert(pkg.files.includes('.cursor-plugin'), 'files missing .cursor-plugin');
+  assert(pkg.files.includes('cursor-rules'), 'files missing cursor-rules');
+  assert(pkg.files.includes('gemini-extension.json'), 'files missing gemini-extension.json');
+});
+
+// 3. package.json has publishConfig
+check('package.json has publishConfig.access = "public"', () => {
+  const pkg = JSON.parse(fs.readFileSync(path.join(REPO, 'package.json'), 'utf8'));
+  assert(pkg.publishConfig && pkg.publishConfig.access === 'public',
+    'publishConfig.access must be "public"');
+});
+
+// 4. .npmignore exists
+check('.npmignore exists to exclude dev files', () => {
+  assert(fs.existsSync(path.join(REPO, '.npmignore')), '.npmignore not found');
+});
+
+// 5. README install commands use npx learnship (not github: prefix)
+check('README uses "npx learnship" (not old github: prefix)', () => {
+  const readme = fs.readFileSync(path.join(REPO, 'README.md'), 'utf8');
+  assert(!readme.includes('npx github:FavioVazquez/learnship'),
+    'README still contains old "npx github:FavioVazquez/learnship" — update to "npx learnship"');
+  assert(readme.includes('npx learnship'), 'README missing "npx learnship" install command');
+});
+
+// 6. package.json name is "learnship" (not scoped)
+check('package.json name is "learnship" (clean npm package name)', () => {
+  const pkg = JSON.parse(fs.readFileSync(path.join(REPO, 'package.json'), 'utf8'));
+  assert(pkg.name === 'learnship', `package name should be "learnship", got "${pkg.name}"`);
+});
+
+// 7. All platform guide docs use npx learnship (not github: prefix)
+check('docs/ install commands use "npx learnship" not old github: prefix', () => {
+  const docsDir = path.join(REPO, 'docs');
+  function scanDir(dir) {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) { scanDir(full); continue; }
+      if (!entry.name.endsWith('.md')) continue;
+      const content = fs.readFileSync(full, 'utf8');
+      if (content.includes('npx github:FavioVazquez/learnship')) {
+        throw new Error(`${full.replace(REPO + '/', '')} still uses old npx github: prefix`);
+      }
+    }
+  }
+  scanDir(docsDir);
+});
+
+console.log('\nSECTION18_PASS=' + pass);
+console.log('SECTION18_FAIL=' + fail);
+NODEEOF
+
+S18_OUTPUT=$(node "$TMPSCRIPT18" "$REPO" 2>&1)
+rm -f "$TMPSCRIPT18"
+
+while IFS= read -r line; do
+  case "$line" in
+    "  PASS "*) ok "${line#  PASS }" ;;
+    "  FAIL "*) fail "${line#  FAIL }" ;;
+  esac
+done <<< "$S18_OUTPUT"
+
+# ──────────────────────────────────────────────────────────────────────────
+# Section 19: Hooks
+# ──────────────────────────────────────────────────────────────────────────
+TMPSCRIPT19=$(mktemp /tmp/ls_test19_XXXXXX.js)
+cat > "$TMPSCRIPT19" << 'NODEEOF'
+const fs = require('fs');
+const path = require('path');
+const REPO = process.argv[2];
+let pass = 0, fail = 0;
+function check(name, fn) {
+  try { fn(); console.log('  PASS ' + name); pass++; }
+  catch(e) { console.log('  FAIL ' + name + ' — ' + e.message); fail++; }
+}
+function assert(cond, msg) { if (!cond) throw new Error(msg); }
+
+// 1. hooks/ directory exists
+check('hooks/ directory exists', () => {
+  assert(fs.existsSync(path.join(REPO, 'hooks')), 'hooks/ directory not found');
+});
+
+// 2. session-start script exists
+check('hooks/session-start script exists', () => {
+  assert(fs.existsSync(path.join(REPO, 'hooks', 'session-start')), 'hooks/session-start not found');
+});
+
+// 3. session-start is executable
+check('hooks/session-start is executable', () => {
+  const stat = fs.statSync(path.join(REPO, 'hooks', 'session-start'));
+  const isExecutable = (stat.mode & 0o111) !== 0;
+  assert(isExecutable, 'hooks/session-start is not executable — run chmod +x hooks/session-start');
+});
+
+// 4. session-start has shebang
+check('hooks/session-start has bash shebang', () => {
+  const content = fs.readFileSync(path.join(REPO, 'hooks', 'session-start'), 'utf8');
+  assert(content.startsWith('#!/usr/bin/env bash') || content.startsWith('#!/bin/bash'),
+    'hooks/session-start missing bash shebang');
+});
+
+// 5. session-start handles both Cursor and Claude Code
+check('hooks/session-start handles Cursor and Claude Code output formats', () => {
+  const content = fs.readFileSync(path.join(REPO, 'hooks', 'session-start'), 'utf8');
+  assert(content.includes('CURSOR_PLUGIN_ROOT'), 'Missing CURSOR_PLUGIN_ROOT check for Cursor');
+  assert(content.includes('CLAUDE_PLUGIN_ROOT'), 'Missing CLAUDE_PLUGIN_ROOT check for Claude Code');
+  assert(content.includes('additional_context'), 'Missing additional_context output for Cursor');
+  assert(content.includes('hookSpecificOutput'), 'Missing hookSpecificOutput for Claude Code');
+});
+
+// 6. session-start injects SKILL.md content
+check('hooks/session-start reads SKILL.md for context injection', () => {
+  const content = fs.readFileSync(path.join(REPO, 'hooks', 'session-start'), 'utf8');
+  assert(content.includes('SKILL.md'), 'session-start does not reference SKILL.md');
+});
+
+// 7. hooks-cursor.json exists and is valid
+check('hooks/hooks-cursor.json exists and has sessionStart hook', () => {
+  const p = path.join(REPO, 'hooks', 'hooks-cursor.json');
+  assert(fs.existsSync(p), 'hooks/hooks-cursor.json not found');
+  const cfg = JSON.parse(fs.readFileSync(p, 'utf8'));
+  assert(cfg.hooks && cfg.hooks.sessionStart, 'hooks-cursor.json missing hooks.sessionStart');
+  assert(Array.isArray(cfg.hooks.sessionStart) && cfg.hooks.sessionStart.length > 0,
+    'hooks-cursor.json sessionStart must be a non-empty array');
+  const cmd = cfg.hooks.sessionStart[0].command || '';
+  assert(cmd.includes('CURSOR_PLUGIN_ROOT'),
+    'hooks-cursor.json command must use ${CURSOR_PLUGIN_ROOT} for absolute path resolution');
+  assert(cmd.includes('session-start'), 'hooks-cursor.json command must reference session-start script');
+});
+
+// 8. hooks-claude.json exists and is valid
+check('hooks/hooks-claude.json exists and has SessionStart hook', () => {
+  const p = path.join(REPO, 'hooks', 'hooks-claude.json');
+  assert(fs.existsSync(p), 'hooks/hooks-claude.json not found');
+  const cfg = JSON.parse(fs.readFileSync(p, 'utf8'));
+  assert(cfg.hooks && cfg.hooks.SessionStart, 'hooks-claude.json missing hooks.SessionStart');
+  const entry = cfg.hooks.SessionStart[0];
+  assert(entry && Array.isArray(entry.hooks) && entry.hooks.length > 0,
+    'hooks-claude.json SessionStart must have inner hooks array with at least one entry');
+  const cmd = entry.hooks[0].command || '';
+  assert(entry.hooks[0].type === 'command', 'hooks-claude.json hook type must be "command"');
+  assert(cmd.includes('CLAUDE_PLUGIN_ROOT'),
+    'hooks-claude.json command must use ${CLAUDE_PLUGIN_ROOT} for absolute path resolution');
+  assert(cmd.includes('session-start'), 'hooks-claude.json command must reference session-start script');
+});
+
+// 9. package.json includes hooks/ in files field
+check('package.json files includes hooks/', () => {
+  const pkg = JSON.parse(fs.readFileSync(path.join(REPO, 'package.json'), 'utf8'));
+  assert(pkg.files.includes('hooks'), 'package.json files missing hooks/');
+});
+
+// 10. skills/ directory has same content as .windsurf/skills/ (in sync)
+check('skills/ and .windsurf/skills/ contain same skill subdirectories', () => {
+  const wsSkills = path.join(REPO, '.windsurf', 'skills');
+  const pkgSkills = path.join(REPO, 'skills');
+  const wsEntries = fs.readdirSync(wsSkills).filter(e =>
+    fs.statSync(path.join(wsSkills, e)).isDirectory()).sort();
+  const pkgEntries = fs.readdirSync(pkgSkills).filter(e =>
+    fs.statSync(path.join(pkgSkills, e)).isDirectory()).sort();
+  assert(JSON.stringify(wsEntries) === JSON.stringify(pkgEntries),
+    `skills/ subdirs ${JSON.stringify(pkgEntries)} don't match .windsurf/skills/ ${JSON.stringify(wsEntries)}`);
+});
+
+console.log('\nSECTION19_PASS=' + pass);
+console.log('SECTION19_FAIL=' + fail);
+NODEEOF
+
+S19_OUTPUT=$(node "$TMPSCRIPT19" "$REPO" 2>&1)
+rm -f "$TMPSCRIPT19"
+
+while IFS= read -r line; do
+  case "$line" in
+    "  PASS "*) ok "${line#  PASS }" ;;
+    "  FAIL "*) fail "${line#  FAIL }" ;;
+  esac
+done <<< "$S19_OUTPUT"
+
+# ──────────────────────────────────────────────────────────────────────────
+# Section 20: session-start hook — runtime execution tests
+# Actually runs the hook script with each platform env and validates output
+# ──────────────────────────────────────────────────────────────────────────
+HOOK_SCRIPT="$REPO/hooks/session-start"
+
+# 20.1 Cursor mode: CURSOR_PLUGIN_ROOT set → must output valid JSON with additional_context
+CURSOR_OUT=$(CURSOR_PLUGIN_ROOT="$REPO" bash "$HOOK_SCRIPT" 2>/dev/null)
+if echo "$CURSOR_OUT" | python3 -c "import sys,json; d=json.load(sys.stdin); assert 'additional_context' in d" 2>/dev/null; then
+  ok "session-start (Cursor mode): exits 0 and emits valid JSON with additional_context"
+else
+  fail "session-start (Cursor mode): did not produce valid JSON with additional_context key"
+fi
+
+# 20.2 Cursor mode: must NOT contain hookSpecificOutput (wrong platform)
+if echo "$CURSOR_OUT" | python3 -c "import sys,json; d=json.load(sys.stdin); assert 'hookSpecificOutput' not in d" 2>/dev/null; then
+  ok "session-start (Cursor mode): does not emit hookSpecificOutput (no double-injection)"
+else
+  fail "session-start (Cursor mode): unexpectedly emits hookSpecificOutput"
+fi
+
+# 20.3 Claude Code mode: CLAUDE_PLUGIN_ROOT set → must output valid JSON with hookSpecificOutput
+CLAUDE_OUT=$(CLAUDE_PLUGIN_ROOT="$REPO" bash "$HOOK_SCRIPT" 2>/dev/null)
+if echo "$CLAUDE_OUT" | python3 -c "import sys,json; d=json.load(sys.stdin); ho=d['hookSpecificOutput']; assert ho['hookEventName']=='SessionStart'; assert 'additionalContext' in ho" 2>/dev/null; then
+  ok "session-start (Claude Code mode): exits 0 and emits valid JSON with hookSpecificOutput.additionalContext"
+else
+  fail "session-start (Claude Code mode): did not produce valid JSON with hookSpecificOutput.additionalContext"
+fi
+
+# 20.4 Claude Code mode: must NOT contain additional_context at top level
+if echo "$CLAUDE_OUT" | python3 -c "import sys,json; d=json.load(sys.stdin); assert 'additional_context' not in d" 2>/dev/null; then
+  ok "session-start (Claude Code mode): does not emit additional_context at top level (no double-injection)"
+else
+  fail "session-start (Claude Code mode): unexpectedly emits additional_context at top level"
+fi
+
+# 20.5 Fallback mode: no env vars → must output valid JSON with additional_context
+FALLBACK_OUT=$(bash "$HOOK_SCRIPT" 2>/dev/null)
+if echo "$FALLBACK_OUT" | python3 -c "import sys,json; d=json.load(sys.stdin); assert 'additional_context' in d" 2>/dev/null; then
+  ok "session-start (fallback mode): exits 0 and emits valid JSON with additional_context"
+else
+  fail "session-start (fallback mode): did not produce valid JSON with additional_context"
+fi
+
+# 20.6 All modes: context must contain learnship workflow keywords
+for label in "Cursor" "Claude Code" "fallback"; do
+  case "$label" in
+    "Cursor")    CONTENT="$CURSOR_OUT" ;;
+    "Claude Code") CONTENT="$CLAUDE_OUT" ;;
+    "fallback")  CONTENT="$FALLBACK_OUT" ;;
+  esac
+  if echo "$CONTENT" | python3 -c "
+import sys, json, urllib.parse
+d = json.load(sys.stdin)
+text = json.dumps(d)
+assert 'new-project' in text, 'missing /new-project workflow reference'
+assert 'discuss-phase' in text, 'missing /discuss-phase workflow reference'
+assert 'learnship' in text, 'missing learnship brand in context'
+" 2>/dev/null; then
+    ok "session-start ($label mode): context contains learnship workflow keywords"
+  else
+    fail "session-start ($label mode): context missing expected learnship workflow keywords"
+  fi
+done
+
+# 20.7 session-start: exits 0 even when SKILL.md is missing (graceful degradation)
+TMPDIR_TEST=$(mktemp -d)
+TMPDIR_HOOKS="$TMPDIR_TEST/hooks"
+mkdir -p "$TMPDIR_HOOKS"
+cp "$HOOK_SCRIPT" "$TMPDIR_HOOKS/session-start"
+chmod +x "$TMPDIR_HOOKS/session-start"
+# No SKILL.md in TMPDIR_TEST — script should exit 0 silently
+if bash "$TMPDIR_HOOKS/session-start" > /dev/null 2>&1; then
+  ok "session-start: exits 0 gracefully when SKILL.md is missing"
+else
+  fail "session-start: non-zero exit when SKILL.md is missing (not graceful)"
+fi
+rm -rf "$TMPDIR_TEST"
 
 # ──────────────────────────────────────────────────────────────────────────
 # Summary
