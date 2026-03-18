@@ -8,35 +8,24 @@ Initialize a new project with full context gathering, optional research, require
 
 ## Step 1: Setup
 
-**Detect the current platform** using environment variables and known platform indicators:
+**Detect the current platform** by inspecting the path of the file you are currently reading (this file). The install path uniquely identifies the platform:
 
-```bash
-# Detect platform via environment variables set by each AI tool
-if [ -n "$CLAUDE_CONFIG_DIR" ] || [ -n "$ANTHROPIC_API_KEY" ] || command -v claude >/dev/null 2>&1; then
-  echo "CLAUDE"
-elif [ -n "$OPENCODE_CONFIG_DIR" ] || command -v opencode >/dev/null 2>&1; then
-  echo "OPENCODE"
-elif [ -n "$GEMINI_API_KEY" ] || command -v gemini >/dev/null 2>&1; then
-  echo "GEMINI"
-elif [ -n "$OPENAI_API_KEY" ] && command -v codex >/dev/null 2>&1; then
-  echo "CODEX"
-elif [ -d "$HOME/.codeium" ] || [ -n "$WINDSURF_CONFIG_DIR" ]; then
-  echo "WINDSURF"
-else
-  echo "UNKNOWN"
-fi
-```
+| If this file's path contains | Platform |
+|---|---|
+| `/.claude/` | Claude Code |
+| `/.codeium/` | Windsurf |
+| `/.config/opencode/` or `/.opencode/` | OpenCode |
+| `/.gemini/` | Gemini CLI |
+| `/.codex/` | Codex CLI |
 
-**If result is `UNKNOWN`:** Ask the user directly: "Which platform are you running? (Windsurf / Claude Code / OpenCode / Gemini CLI / Codex CLI)"
-
-Set `PLATFORM` to the detected value.
+Set `PLATFORM` accordingly. If you cannot determine the path, ask: "Which platform are you running? (Windsurf / Claude Code / OpenCode / Gemini CLI / Codex CLI)"
 
 Platform determines:
 - Which directory to add to `.gitignore` (so AI config files aren't tracked)
 - Whether to ask the parallelization question (Group D below)
 - The gitignore directory by platform:
-  - **Windsurf** → `.windsurf/`
   - **Claude Code** → `.claude/`
+  - **Windsurf** → `.windsurf/`
   - **OpenCode** → `.opencode/`
   - **Gemini CLI** → `.gemini/`
   - **Codex CLI** → `.codex/`
