@@ -29,6 +29,13 @@ Thumbs.db
 # Local planning artifacts (user projects — not part of the platform repo)
 .planning/
 
+# Local test installs (created when running bin/learnship.js locally to test)
+.claude/
+.windsurf/local/
+.gemini/
+.codex/
+.config/opencode/
+
 # Local windsurf install patches
 .windsurf/local-patches/
 
