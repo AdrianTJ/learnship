@@ -1,9 +1,8 @@
 {
-  "version": 1,
   "hooks": {
-    "sessionStart": [
+    "beforeSubmitPrompt": [
       {
-        "command": "\"${CURSOR_PLUGIN_ROOT}/hooks/session-start\""
+        "command": "${CURSOR_PLUGIN_ROOT}/hooks/session-start"
       }
     ]
   }
