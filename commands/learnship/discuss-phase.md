@@ -10,7 +10,7 @@ allowed-tools:
 ---
 
 <execution_context>
-@~/.claude/workflows/discuss-phase.md
+@~/.claude/learnship/workflows/discuss-phase.md
 </execution_context>
 
 <context>

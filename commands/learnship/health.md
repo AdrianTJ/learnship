@@ -7,7 +7,7 @@ allowed-tools:
 ---
 
 <execution_context>
-@~/.claude/workflows/health.md
+@~/.claude/learnship/workflows/health.md
 </execution_context>
 
 <context>

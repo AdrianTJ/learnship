@@ -14,7 +14,7 @@ allowed-tools:
 ---
 
 <execution_context>
-@~/.claude/workflows/quick.md
+@~/.claude/learnship/workflows/quick.md
 </execution_context>
 
 <context>

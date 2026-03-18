@@ -10,7 +10,7 @@ allowed-tools:
 ---
 
 <execution_context>
-@~/.claude/workflows/discuss-milestone.md
+@~/.claude/learnship/workflows/discuss-milestone.md
 </execution_context>
 
 <context>

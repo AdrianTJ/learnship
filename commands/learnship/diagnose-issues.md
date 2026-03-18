@@ -10,7 +10,7 @@ allowed-tools:
 ---
 
 <execution_context>
-@~/.claude/workflows/diagnose-issues.md
+@~/.claude/learnship/workflows/diagnose-issues.md
 </execution_context>
 
 <context>

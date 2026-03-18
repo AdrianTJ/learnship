@@ -8,7 +8,7 @@ allowed-tools:
 ---
 
 <execution_context>
-@~/.claude/workflows/resume-work.md
+@~/.claude/learnship/workflows/resume-work.md
 </execution_context>
 
 <context>

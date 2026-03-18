@@ -8,7 +8,7 @@ allowed-tools:
 ---
 
 <execution_context>
-@~/.claude/workflows/add-todo.md
+@~/.claude/learnship/workflows/add-todo.md
 </execution_context>
 
 <context>

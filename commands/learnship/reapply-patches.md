@@ -8,7 +8,7 @@ allowed-tools:
 ---
 
 <execution_context>
-@~/.claude/workflows/reapply-patches.md
+@~/.claude/learnship/workflows/reapply-patches.md
 </execution_context>
 
 <context>

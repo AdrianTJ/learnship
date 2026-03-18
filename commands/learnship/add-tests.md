@@ -11,7 +11,7 @@ allowed-tools:
 ---
 
 <execution_context>
-@~/.claude/workflows/add-tests.md
+@~/.claude/learnship/workflows/add-tests.md
 </execution_context>
 
 <context>

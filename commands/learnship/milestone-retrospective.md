@@ -8,7 +8,7 @@ allowed-tools:
 ---
 
 <execution_context>
-@~/.claude/workflows/milestone-retrospective.md
+@~/.claude/learnship/workflows/milestone-retrospective.md
 </execution_context>
 
 <context>

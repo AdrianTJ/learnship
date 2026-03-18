@@ -7,7 +7,7 @@ allowed-tools:
 ---
 
 <execution_context>
-@~/.claude/workflows/progress.md
+@~/.claude/learnship/workflows/progress.md
 </execution_context>
 
 <context>

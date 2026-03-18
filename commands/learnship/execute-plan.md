@@ -13,7 +13,7 @@ allowed-tools:
 ---
 
 <execution_context>
-@~/.claude/workflows/execute-plan.md
+@~/.claude/learnship/workflows/execute-plan.md
 </execution_context>
 
 <context>

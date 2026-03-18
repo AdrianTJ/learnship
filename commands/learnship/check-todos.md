@@ -9,7 +9,7 @@ allowed-tools:
 ---
 
 <execution_context>
-@~/.claude/workflows/check-todos.md
+@~/.claude/learnship/workflows/check-todos.md
 </execution_context>
 
 <context>

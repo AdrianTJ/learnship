@@ -9,7 +9,7 @@ allowed-tools:
 ---
 
 <execution_context>
-@~/.claude/workflows/next.md
+@~/.claude/learnship/workflows/next.md
 </execution_context>
 
 <context>

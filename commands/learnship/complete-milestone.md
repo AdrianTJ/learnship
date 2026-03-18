@@ -9,7 +9,7 @@ allowed-tools:
 ---
 
 <execution_context>
-@~/.claude/workflows/complete-milestone.md
+@~/.claude/learnship/workflows/complete-milestone.md
 </execution_context>
 
 <context>

@@ -10,7 +10,7 @@ allowed-tools:
 ---
 
 <execution_context>
-@~/.claude/workflows/verify-work.md
+@~/.claude/learnship/workflows/verify-work.md
 </execution_context>
 
 <context>

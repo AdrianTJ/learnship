@@ -8,7 +8,7 @@ allowed-tools:
 ---
 
 <execution_context>
-@~/.claude/workflows/pause-work.md
+@~/.claude/learnship/workflows/pause-work.md
 </execution_context>
 
 <context>

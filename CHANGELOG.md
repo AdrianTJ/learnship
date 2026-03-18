@@ -9,6 +9,16 @@ This project uses [semantic versioning](https://semver.org/): `MAJOR.MINOR.PATCH
 
 ---
 
+## [v1.9.6] — Fix all 42 Claude Code command wrappers pointing to wrong workflow path
+
+**Released:** 2026-03-18
+
+### Fixed
+
+- **All 42 Claude Code commands were silently broken** — every command wrapper in `commands/learnship/` referenced `@~/.claude/workflows/<name>.md` but the actual install path is `@~/.claude/learnship/workflows/<name>.md`. Claude Code was reading a non-existent file and falling back to its own (incomplete) knowledge for every command — `/learnship:new-project`, `/learnship:execute-phase`, `/learnship:ls`, and all others. All 42 paths corrected to `@~/.claude/learnship/workflows/`.
+
+---
+
 ## [v1.9.5] — new-project: platform detection + correct parallelization question per platform
 
 **Released:** 2026-03-18

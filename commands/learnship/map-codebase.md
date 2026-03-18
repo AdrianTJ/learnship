@@ -10,7 +10,7 @@ allowed-tools:
 ---
 
 <execution_context>
-@~/.claude/workflows/map-codebase.md
+@~/.claude/learnship/workflows/map-codebase.md
 </execution_context>
 
 <context>
