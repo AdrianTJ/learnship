@@ -50,7 +50,7 @@
   "license": "MIT",
   "author": "Favio Vazquez",
   "bin": {
-    "learnship": "./bin/install.js"
+    "learnship": "./bin/learnship.js"
   },
   "scripts": {
     "start": "node bin/learnship.js",
