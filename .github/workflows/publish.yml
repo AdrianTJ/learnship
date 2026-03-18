@@ -52,3 +52,33 @@ jobs:
         run: npm publish --access public --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Update learnship-marketplace version
+        env:
+          GH_PAT: ${{ secrets.GITHUB_PAT }}
+        run: |
+          VERSION=$(node -e "console.log(require('./package.json').version)")
+          CURRENT=$(curl -s -H "Authorization: token $GH_PAT" \
+            "https://api.github.com/repos/FavioVazquez/learnship-marketplace/contents/.claude-plugin/marketplace.json" \
+            | python3 -c "import sys,json,base64; r=json.load(sys.stdin); print(json.loads(base64.b64decode(r['content']))['plugins'][0]['version'])")
+          if [ "$CURRENT" = "$VERSION" ]; then
+            echo "Marketplace already at $VERSION — skipping"
+            exit 0
+          fi
+          curl -s -H "Authorization: token $GH_PAT" \
+            "https://api.github.com/repos/FavioVazquez/learnship-marketplace/contents/.claude-plugin/marketplace.json" \
+            | python3 -c "
+          import sys,json,base64,urllib.request,os
+          pat=os.environ['GH_PAT']
+          r=json.load(sys.stdin)
+          content=json.loads(base64.b64decode(r['content']))
+          content['plugins'][0]['version']='$VERSION'
+          new_b64=base64.b64encode(json.dumps(content,indent=2).encode()+b'\n').decode()
+          payload=json.dumps({'message':'chore: bump version to $VERSION','sha':r['sha'],'content':new_b64}).encode()
+          req=urllib.request.Request(
+            'https://api.github.com/repos/FavioVazquez/learnship-marketplace/contents/.claude-plugin/marketplace.json',
+            data=payload, method='PUT',
+            headers={'Authorization':'token '+pat,'Content-Type':'application/json'})
+          resp=json.loads(urllib.request.urlopen(req).read())
+          print('Marketplace updated to $VERSION:', resp['commit']['sha'][:12])
+          "
