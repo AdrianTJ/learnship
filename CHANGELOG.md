@@ -9,6 +9,24 @@ This project uses [semantic versioning](https://semver.org/): `MAJOR.MINOR.PATCH
 
 ---
 
+## [v1.9.2] — Cursor plugin compliance + housekeeping
+
+**Released:** 2026-03-18
+
+### Fixed
+
+- **Cursor `plugin.json`** — added required `displayName` field; added `commands` field pointing to `commands/learnship`; fixed `logo` to reference `assets/logo.png` (PNG with background plate) instead of the SVG.
+- **`hooks-cursor.json`** — replaced invalid `sessionStart` hook type (not supported by Cursor) with `beforeSubmitPrompt`; removed spurious `"version": 1` field not in Cursor spec.
+- **Author email** — corrected `favio.vazquez@gmail.com` → `favio.vazquezp@gmail.com` across all plugin manifests (`.claude-plugin/plugin.json`, `.cursor-plugin/plugin.json`, `marketplace/.claude-plugin/marketplace.json`).
+- **Test suite** — updated hooks test to expect `beforeSubmitPrompt` instead of `sessionStart`.
+
+### Added
+
+- **`assets/logo.png`** — 512×512 PNG logo (dark background, `/ls` in green) for Cursor marketplace submission.
+- **`PRIVACY.md`** — privacy policy for Anthropic Claude Code Verified Status; learnship collects no user data.
+
+---
+
 ## [v1.9.1] — Fix new-project workflow skipping steps + auto npm publish
 
 **Released:** 2026-03-18
