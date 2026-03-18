@@ -88,8 +88,8 @@ Or just work normally — the rule file activates skills at workflow checkpoints
 | Slash commands | ✅ Via `.mdc` rule context |
 | `@agentic-learning` skill | ✅ Context-file |
 | `impeccable` skill suite | ✅ Context-file |
-| Parallel subagents | ❌ Not supported |
-| Wave execution | Sequential only |
+| Parallel subagents | ✅ Supported since Cursor 2.4 |
+| Wave execution | ✅ Parallel (Cursor 2.4+) |
 | Marketplace install | ✅ `/add-plugin learnship` |
 
 ## Manual rule install (before marketplace approval)

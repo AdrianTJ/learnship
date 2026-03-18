@@ -9,6 +9,29 @@ This project uses [semantic versioning](https://semver.org/): `MAJOR.MINOR.PATCH
 
 ---
 
+## [v1.9.9] — Correct parallelization platform matrix (Gemini CLI sequential-only; Cursor 2.4+ parallel)
+
+**Released:** 2026-03-18
+
+### Fixed
+
+- **Gemini CLI incorrectly offered the parallelization question** — Gemini CLI has subagents but parallel execution is not yet shipped (open GitHub issues #14963, #17749). `rewriteNewProject` now treats Gemini the same as Windsurf for Group D: auto-sets `parallelization: false` and explains why.
+- **Cursor docs said "Parallel subagents: ❌ Not supported"** — Cursor 2.4 (released Oct 2025) introduced native parallel subagents. Updated `docs/platform-guide/cursor.md` capabilities table.
+- **2 new tests added** for OpenCode and Codex parallel block; Gemini test corrected to assert question is absent.
+
+### Verified parallel subagent support (from official docs):
+
+| Platform | Parallel subagents |
+|---|---|
+| Claude Code | ✅ Yes — `Task()` tool |
+| OpenCode | ✅ Yes |
+| Codex CLI | ✅ Yes — explicit spawning, `max_concurrency` |
+| Cursor | ✅ Yes — since 2.4 (Oct 2025), via `.cursor/rules/` workflows |
+| Gemini CLI | ⚠️ Sequential only — parallel is an open issue, not shipped |
+| Windsurf | ❌ No subagents |
+
+---
+
 ## [v1.9.8] — Fix platform-specific gitignore and parallelization question via install-time rewriting
 
 **Released:** 2026-03-18

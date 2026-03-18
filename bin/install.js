@@ -539,12 +539,19 @@ function rewriteNewProject(content, platform) {
   const gitignoreCmd = `grep -q '${dirName}/' .gitignore 2>/dev/null || echo '${dirName}/' >> .gitignore`;
   content = content.replace('<!-- LEARNSHIP_GITIGNORE_CMD -->', gitignoreCmd);
 
-  // Parallel execution block — present question on all platforms except Windsurf
+  // Platforms that support real parallel subagents (verified against official docs)
+  // Windsurf: no subagents at all
+  // Gemini CLI: subagents exist but parallel execution is not yet shipped (GitHub issues #14963/#17749)
+  const supportsParallel = platform === 'claude' || platform === 'opencode' || platform === 'codex';
+
+  // Parallel execution block
   let parallelBlock;
-  if (platform === 'windsurf') {
-    parallelBlock = `**Group D — Parallel execution:**\n\nWindsurf does not support real subagents. Parallelization is automatically set to \`false\`.`;
+  if (supportsParallel) {
+    parallelBlock = `**Group D — Parallel execution:**\n\n${label} supports real parallel subagents. Ask:\n\n"Do you want to enable parallel subagent execution?"\n- **No** (recommended default) — Plans execute sequentially, one at a time. Safer, easier to follow.\n- **Yes** — Each independent plan in a wave gets its own dedicated subagent with a fresh context budget. Faster, but uses more tokens.`;
+  } else if (platform === 'gemini') {
+    parallelBlock = `**Group D — Parallel execution:**\n\nGemini CLI supports subagents but only runs them sequentially — parallel execution is not yet available. Parallelization is automatically set to \`false\`.`;
   } else {
-    parallelBlock = `**Group D — Parallel execution:**\n\n${label} supports real subagents. Ask:\n\n"Do you want to enable parallel subagent execution?"\n- **No** (recommended default) — Plans execute sequentially, one at a time. Safer, easier to follow.\n- **Yes** — Each independent plan in a wave gets its own dedicated subagent with a fresh context budget. Faster, but uses more tokens.`;
+    parallelBlock = `**Group D — Parallel execution:**\n\n${label} does not support real subagents. Parallelization is automatically set to \`false\`.`;
   }
   content = content.replace('<!-- LEARNSHIP_PARALLEL_BLOCK -->', parallelBlock);
 

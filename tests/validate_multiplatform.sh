@@ -732,10 +732,21 @@ check('rewriteNewProject(gemini): gitignore cmd uses .gemini/', () => {
   assert(!out.includes('.claude/'), 'must not contain .claude/');
 });
 
-// 17. Gemini: parallel block asks the question
-check('rewriteNewProject(gemini): parallel block contains the question', () => {
+// 17. Gemini: parallel block does NOT ask the question (sequential only, not yet parallel)
+check('rewriteNewProject(gemini): parallel block skips question (sequential only)', () => {
   const out = rewriteNewProject(NP_SRC, 'gemini');
-  assert(out.includes('parallel subagent'), 'parallelization question missing for Gemini');
+  assert(!out.includes('parallel subagent'), 'parallelization question must not appear for Gemini (sequential only)');
+  assert(out.includes('automatically set to'), 'should mention auto-set false; got:\n' + out);
+});
+
+// 17b. OpenCode and Codex DO ask the parallel question
+check('rewriteNewProject(opencode): parallel block contains the question', () => {
+  const out = rewriteNewProject(NP_SRC, 'opencode');
+  assert(out.includes('parallel subagent'), 'parallelization question missing for OpenCode');
+});
+check('rewriteNewProject(codex): parallel block contains the question', () => {
+  const out = rewriteNewProject(NP_SRC, 'codex');
+  assert(out.includes('parallel subagent'), 'parallelization question missing for Codex');
 });
 
 // 18. No raw markers remain in any platform output
