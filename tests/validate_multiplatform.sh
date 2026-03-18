@@ -2134,14 +2134,15 @@ check('hooks/session-start reads SKILL.md for context injection', () => {
 });
 
 // 7. hooks-cursor.json exists and is valid
-check('hooks/hooks-cursor.json exists and has sessionStart hook', () => {
+check('hooks/hooks-cursor.json exists and has valid hook', () => {
   const p = path.join(REPO, 'hooks', 'hooks-cursor.json');
   assert(fs.existsSync(p), 'hooks/hooks-cursor.json not found');
   const cfg = JSON.parse(fs.readFileSync(p, 'utf8'));
-  assert(cfg.hooks && cfg.hooks.sessionStart, 'hooks-cursor.json missing hooks.sessionStart');
-  assert(Array.isArray(cfg.hooks.sessionStart) && cfg.hooks.sessionStart.length > 0,
-    'hooks-cursor.json sessionStart must be a non-empty array');
-  const cmd = cfg.hooks.sessionStart[0].command || '';
+  // sessionStart is not a valid Cursor hook type; beforeSubmitPrompt is the correct equivalent
+  assert(cfg.hooks && cfg.hooks.beforeSubmitPrompt, 'hooks-cursor.json missing hooks.beforeSubmitPrompt');
+  assert(Array.isArray(cfg.hooks.beforeSubmitPrompt) && cfg.hooks.beforeSubmitPrompt.length > 0,
+    'hooks-cursor.json beforeSubmitPrompt must be a non-empty array');
+  const cmd = cfg.hooks.beforeSubmitPrompt[0].command || '';
   assert(cmd.includes('CURSOR_PLUGIN_ROOT'),
     'hooks-cursor.json command must use ${CURSOR_PLUGIN_ROOT} for absolute path resolution');
   assert(cmd.includes('session-start'), 'hooks-cursor.json command must reference session-start script');
