@@ -55,7 +55,7 @@ jobs:
 
       - name: Update learnship-marketplace version
         env:
-          GH_PAT: ${{ secrets.GITHUB_PAT }}
+          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           VERSION=$(node -e "console.log(require('./package.json').version)")
           CURRENT=$(curl -s -H "Authorization: token $GH_PAT" \
