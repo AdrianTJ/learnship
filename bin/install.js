@@ -926,7 +926,7 @@ function install(platform, isGlobal) {
   const learnshipSrc = path.join(src, 'learnship');
   const commandsSrc  = path.join(src, 'commands', 'learnship');
   const agentsSrc    = path.join(src, 'agents');
-  const skillsSrc    = path.join(src, '.windsurf', 'skills');
+  const skillsSrc    = path.join(src, 'skills');
   const failures = [];
 
   // 1. Install learnship/ payload (workflows, references, templates)

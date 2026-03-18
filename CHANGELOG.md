@@ -9,6 +9,16 @@ This project uses [semantic versioning](https://semver.org/): `MAJOR.MINOR.PATCH
 
 ---
 
+## [v1.9.4] — Fix skills not installing on Claude Code, OpenCode, Gemini, Codex
+
+**Released:** 2026-03-18
+
+### Fixed
+
+- **Skills install failure on all non-Windsurf platforms** — `bin/install.js` was looking for skills at `.windsurf/skills/` (a Windsurf-specific path) instead of the repo-root `skills/` directory. This caused an `ENOENT` crash during `npx learnship --claude` (and all other platforms). Skills now install correctly for all platforms.
+
+---
+
 ## [v1.9.3] — Fix npx learnship showing Windsurf-only installer
 
 **Released:** 2026-03-18
