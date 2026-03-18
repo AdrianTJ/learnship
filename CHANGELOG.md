@@ -9,6 +9,19 @@ This project uses [semantic versioning](https://semver.org/): `MAJOR.MINOR.PATCH
 
 ---
 
+## [v1.9.5] — new-project: platform detection + correct parallelization question per platform
+
+**Released:** 2026-03-18
+
+### Fixed
+
+- **`new-project` didn't ask parallelization question on Claude Code** — Step 1 now detects the running platform (Claude Code, OpenCode, Gemini CLI, Codex CLI, Windsurf) by checking which config directory contains the workflow file. Group D parallelization question is now gated with an explicit `If PLATFORM is CLAUDE/OPENCODE/GEMINI/CODEX: Ask this` / `If PLATFORM is WINDSURF: Skip, set false` structure — replacing the weak hint that agents ignored.
+- **`new-project` was adding `.windsurf/` to `.gitignore` on all platforms** — now adds the correct platform-specific directory (`.claude/`, `.opencode/`, `.gemini/`, `.codex/`, or `.windsurf/`) based on detected platform.
+- **Step 9 completion message** — now shows the detected platform and parallelization setting as confirmation.
+- Both `learnship/workflows/new-project.md` and `.windsurf/workflows/new-project.md` updated in sync.
+
+---
+
 ## [v1.9.4] — Fix skills not installing on Claude Code, OpenCode, Gemini, Codex
 
 **Released:** 2026-03-18

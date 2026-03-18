@@ -8,6 +8,31 @@ Initialize a new project with full context gathering, optional research, require
 
 ## Step 1: Setup
 
+**Detect the current platform** by inspecting which config directory this workflow file lives in:
+
+```bash
+# Check which platform config directory contains this workflow
+test -f "$HOME/.claude/learnship/workflows/new-project.md" && echo "CLAUDE" || \
+test -f "./.claude/learnship/workflows/new-project.md" && echo "CLAUDE" || \
+test -f "$HOME/.config/opencode/learnship/workflows/new-project.md" && echo "OPENCODE" || \
+test -f "./.opencode/learnship/workflows/new-project.md" && echo "OPENCODE" || \
+test -f "$HOME/.gemini/learnship/workflows/new-project.md" && echo "GEMINI" || \
+test -f "$HOME/.codex/learnship/workflows/new-project.md" && echo "CODEX" || \
+echo "WINDSURF"
+```
+
+Set `PLATFORM` to the detected value. If detection is ambiguous (e.g. multiple matches), ask: "Which platform are you running? (Windsurf / Claude Code / OpenCode / Gemini CLI / Codex CLI)"
+
+Platform determines:
+- Which directory to add to `.gitignore` (so AI config files aren't tracked)
+- Whether to ask the parallelization question (Group D below)
+- The gitignore directory by platform:
+  - **Windsurf** → `.windsurf/`
+  - **Claude Code** → `.claude/`
+  - **OpenCode** → `.opencode/`
+  - **Gemini CLI** → `.gemini/`
+  - **Codex CLI** → `.codex/`
+
 Check if `.planning/PROJECT.md` already exists:
 
 ```bash
@@ -15,16 +40,6 @@ test -f .planning/PROJECT.md && echo "EXISTS" || echo "NEW"
 ```
 
 **If EXISTS:** Stop. Project already initialized. Use the `progress` workflow to see where you are.
-
-Check if `.windsurf/` is already in `.gitignore`:
-```bash
-grep -q '.windsurf' .gitignore 2>/dev/null && echo "IGNORED" || echo "NOT_IGNORED"
-```
-
-**If NOT_IGNORED:** Add it now (regardless of whether the project is new or existing):
-```bash
-echo '.windsurf/' >> .gitignore
-```
 
 Check if git is initialized:
 
@@ -37,9 +52,11 @@ test -d .git && echo "HAS_GIT" || echo "NO_GIT"
 git init
 ```
 
-Immediately add `.windsurf/` to `.gitignore` so the AI platform files are not tracked in the project repo:
+Add the platform config directory to `.gitignore` so AI platform files are not tracked in the project repo. Use the platform-specific directory detected above:
 ```bash
-echo '.windsurf/' >> .gitignore
+# Example for Claude Code:
+grep -q '.claude/' .gitignore 2>/dev/null || echo '.claude/' >> .gitignore
+# (use the correct dir for the detected platform)
 ```
 
 Create the planning directory:
@@ -75,13 +92,15 @@ Ask: "Which workflow agents should be enabled?"
 - **Plan Check** (recommended) — Verify plans achieve their goals before execution
 - **Verifier** (recommended) — Confirm deliverables match phase goals after execution
 
-**Group D — Parallel execution (Claude Code, OpenCode, Gemini CLI, Codex CLI only — skip for Windsurf):**
+**Group D — Parallel execution:**
+
+**If PLATFORM is `WINDSURF`:** Skip this question entirely. Set `parallelization: false` automatically. Windsurf does not support real subagents.
+
+**If PLATFORM is `CLAUDE`, `OPENCODE`, `GEMINI`, or `CODEX`:** Ask this question — these platforms support real subagents:
 
 Ask: "Do you want to enable parallel subagent execution?"
-- **No** (recommended default) — Plans execute sequentially, one at a time. Always safe, works on all platforms.
-- **Yes** — Each independent plan in a wave gets its own dedicated subagent with a fresh context budget. Faster but requires a platform that supports real subagents (Claude Code, OpenCode, Gemini CLI, Codex CLI). **Not available on Windsurf.**
-
-> Only ask this question if the platform is not Windsurf. If on Windsurf, always set `parallelization: false`.
+- **No** (recommended default) — Plans execute sequentially, one at a time. Safer, easier to follow.
+- **Yes** — Each independent plan in a wave gets its own dedicated subagent with a fresh context budget. Faster, but uses more tokens.
 
 Ask: "Commit planning docs to git?"
 - **Yes** (recommended) — Planning docs tracked in version control
@@ -335,6 +354,8 @@ Files created:
 [- .planning/research/ (if research was run)]
 
 ▶ Next: discuss-phase 1 → plan-phase 1 → execute-phase 1
+
+> **Platform detected:** `[PLATFORM]` — parallelization is `[true/false]`
 ```
 
 ---
